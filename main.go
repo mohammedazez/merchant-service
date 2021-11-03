@@ -1,7 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"merchant-service/app"
+)
 
 func main() {
-	fmt.Println("add main")
+	app.StartApplication()
 }
