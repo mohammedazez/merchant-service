@@ -109,8 +109,8 @@ _Response (200)_
   "data" : [
       {
           "id" : 01522ac9-ff4c-4306-8ecf-7d6f64d7b074,
-          "full_name" : "Joko Hitler",
-          "email" : "jokohitler@mail.com"
+          "full_name" : "robert",
+          "email" : "robert@mail.com"
       }, {
           "id" : 01522ac9-ff4c-4306-8ecf-7d6f64d7b075,
           "full_name" : "Abdul Franklin",
@@ -123,8 +123,8 @@ _Response (200)_
       }
       , {
           "id" : 01522ac9-ff4c-4306-8ecf-7d6f64d7b077,
-          "full_name" : "Michael Parto",
-          "email" : "michaelparto@mail.com"
+          "full_name" : "Michael",
+          "email" : "michael@mail.com"
       }
   ],
   "message": "success"
