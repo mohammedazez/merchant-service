@@ -15,6 +15,7 @@ Dalam setiap pekerjaan di atas anda diwajibkan untuk melengkapi hal-hal berikut
 
 
 2. Coding pekerjaan Poin A, B, dan C menggunakan REST API - Bobot 40%
+
    a. Gunakan database Mysql atau PostgreSQL (using MySQL) :heavy_check_mark:
    
    b. Dikerjakan dengan menggunakan Golang (using Golang) :heavy_check_mark:
@@ -24,6 +25,7 @@ Dalam setiap pekerjaan di atas anda diwajibkan untuk melengkapi hal-hal berikut
    d. Gunakan best practice Rest API untuk menentukan Response Code (using http respone code) :heavy_check_mark:
 
 3. Poin Plus :
+
    a. Optimasi Database dengan memperhatikan indexing dan tipe data - Bobot 5% :heavy_check_mark:
 
    b. Untuk authorization gunakan JWT - Bobot 5% :heavy_check_mark:
