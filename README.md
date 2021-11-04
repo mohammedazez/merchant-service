@@ -414,3 +414,319 @@ _Response (500 - Internal Server Error)_
 ```
 ---
 
+## RESTful Endpoints Outlets
+### GET /outlets/all
+
+> Get All outlets
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "status": 200,
+  "meta" : {
+    "total_page": 1,
+    "current_page": 1,
+    "page_size": 10,
+    "total": 4
+  }, 
+  "data" : [
+      {
+          "id" : "01522ac9-ff4c-4306-8ecf-7d6f64d7b074",
+          "outlet_name" : "Toko Roti Cabang Jakarta",
+          "user_id" : "59de8f50-7ccc-4bfc-8f65-f496be0f7033"
+      }, {
+          "id" : "b0bdeb76-bdcc-40a4-8d15-cfdc1aa573b3",
+          "outlet_name" : "Toko Roti Cabang Bandung",
+          "user_id" : "59de8f50-7ccc-4bfc-8f65-f496be0f7033"
+      }
+      , {
+          "id" : "d575db68-ff86-4ed8-ad09-f9a056e103fc",
+          "outlet_name" : "Toko Roti Cabang Surabaya",
+          "user_id" : "59de8f50-7ccc-4bfc-8f65-f496be0f7033"
+      }
+      , {
+          "id" : "1d1d7cbd-4508-4ab8-aa1b-913a0ea0f71a",
+          "outlet_name" : "Toko Roti Cabang Semarang",
+          "user_id" : "59de8f50-7ccc-4bfc-8f65-f496be0f7033"
+      }
+  ],
+  "message": "success"
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "status": 500,
+  "meta" : {
+    "total_page": 0,
+    "current_page": 0,
+    "page_size": 0,
+    "total": 0
+  }, 
+  "data" : {
+      "error" : ""
+  },
+  "message" : "Internal server error",
+}
+```
+---
+
+### POST /outlets/create
+
+> Create new outlets
+
+_Request Header_
+```
+{
+   "Authorization": "<your Authorization>"
+}
+```
+_Request Body_
+
+```json
+{
+  "outlet_name": "Toko Roti cabang Yogyakarta",
+}
+```
+
+_Response (201)_
+```json
+{
+  "status" : 201,
+  "data" : 
+      {
+         "id" : <given id by system>,
+		   "outlet_name" : "<posted outlet name>"
+      },
+   "message" : "success create new outlet",
+}
+```
+
+_Response (400 - Bad Request)_
+```json
+{
+  "status" : "400",
+  "data" : 
+      {
+        "errors" : []
+      },
+  "message" : "input data required"
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "status" : 500,
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Internal Server error"
+}
+```
+---
+
+### GET /outlets/:outlet_id
+
+> Get outlet by Id
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "status" : 200,
+  "data" :
+      {
+        "id" : "1d1d7cbd-4508-4ab8-aa1b-913a0ea0f71a",
+        "outlet_name" : "Toko Roti cabang Semarang",
+        "outlets" : [
+           {
+               "id" : "e5bd18e5-d797-464c-8674-341d1f818c2b",
+               "product_name" : "Roti Bagel",
+               "price" : 250000,
+               "sku" : "RTI-BGL-001",
+               "display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+               "outlet_id" : "1d1d7cbd-4508-4ab8-aa1b-913a0ea0f71a"
+           },
+            {
+               "id" : "d2d0c82d-23cc-4db0-ad26-f563580da197",
+               "product_name" : "Roti Biali",
+               "price" : 300000,
+               "sku" : "RTI-BLI-002",
+               "display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+               "outlet_id" : "1d1d7cbd-4508-4ab8-aa1b-913a0ea0f71a"
+           }
+        ]
+      },
+   "message" : "success get outlet by Id"
+}
+```
+_Response (400 - Bad Request)_
+```json
+{
+  "status" : "400"
+  "data" : 
+      {
+        "error" : "outlet id <id? not found"
+      },
+  "message" : "error bad request outlet Id"
+}
+```
+
+*Response (401 - Unauthorized)*
+
+```
+{
+  "status" : "401",
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Unauthorize"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```json
+{
+  "status" : 500,
+  "data" : {
+      "error" : ""
+  },
+  "message" : "Internal server error"
+}
+```
+---
+
+### PUT /outlets/:outlet_id
+
+> Update outlet by Id
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```json
+{
+    "outlet_name" : "Toko Roti cabang Semarang Terbaik",
+}
+```
+
+_Response (200)_
+```json
+{
+  "status" : 200,
+  "data" :
+      {
+        "id" : "1d1d7cbd-4508-4ab8-aa1b-913a0ea0f71a",
+        "outlet_name" : "Toko Roti cabang Semarang Terbaik"
+      },
+  "message" : "success update outlet by Id"
+}
+```
+
+*Response (401 - Unauthorized)*
+
+```
+{
+  "status" : "401",
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Unauthorize"
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "status" : 500,
+  "data" : {
+      "error" : ""
+  },
+  "message" : "Internal server error"
+}
+```
+---
+
+### DELETE /outlets/:outlets_id
+
+> Delete outlet by ID
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "status" : 200,
+  "data" : "",
+  "message" : "success delete outlet by Id",
+}
+```
+
+*Response (401 - Unauthorized)*
+
+```
+{
+  "status" : "401",
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Unauthorize"
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "status" : 500,
+  "data" : {
+      "error" : ""
+  },
+  "message" : "Internal server error"
+}
+```
+---
+
