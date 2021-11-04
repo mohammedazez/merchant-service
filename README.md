@@ -38,14 +38,11 @@ b. Link Deploy
 
 c. Api Spec
 
-# CANGKOEL RESTFUL API
+# POST MINI APP RESTFUL API
 
 ```
-https://cangkoel.herokuapp.com/
+https://merchant.herokuapp.com/
 ```
-
-CANGKOEL adalah sebuah platform yang menyediakan solusi bagi petani/perseorangan yang mempunyai lahan/komoditas namun tidak punya biaya untuk produksi kemudian mengekspor komoditas mereka! tidak punya buyer? kami yang mencarikan!
-
 
 
 # List of Available Endpoints
