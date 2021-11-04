@@ -12,7 +12,7 @@ var (
 
 func StartApplication() {
 
-	mapUrls()
+	// mapUrls()
 
 	port := configs.EnvFile.APPS_PORT
 	router.Run(port)
