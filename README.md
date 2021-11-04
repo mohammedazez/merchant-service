@@ -47,13 +47,27 @@ https://merchant.herokuapp.com/
 
 # List of Available Endpoints
 
-### Users Petani
+### Users
 - `GET /users/all`
 - `POST /users/register`
 - `POST /users/login`
 - `GET /users/:user_id` 
 - `PUT /users/:user_id`
 - `DELETE /users/:user_id`
+
+### Outlets
+- `GET /outlets/all`
+- `POST /outlets/create`
+- `GET /outlets/:outlet_id` 
+- `PUT /outlets/:outlet_id`
+- `DELETE /outlets/:outlet_id`
+
+### Products
+- `GET /products/all`
+- `POST /products/create`
+- `GET /products/:product_id` 
+- `PUT /products/:product_id`
+- `DELETE /products/:product_id`
 
 
 
