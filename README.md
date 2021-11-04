@@ -15,18 +15,24 @@ Dalam setiap pekerjaan di atas anda diwajibkan untuk melengkapi hal-hal berikut
 
 
 2. Coding pekerjaan Poin A, B, dan C menggunakan REST API - Bobot 40%
-   a. Gunakan database Mysql atau PostgreSQL
-   b. Dikerjakan dengan menggunakan Golang (Recommended)
+   a. Gunakan database Mysql atau PostgreSQL (using MySQL) :heavy_check_mark:
+   
+   b. Dikerjakan dengan menggunakan Golang (using Golang) :heavy_check_mark:
+   
    c. Untuk PHP menggunakan framework CodeIgniter/Laravel
-   d. Gunakan best practice Rest API untuk menentukan Response Code
+   
+   d. Gunakan best practice Rest API untuk menentukan Response Code (using http respone code) :heavy_check_mark:
 
 3. Poin Plus :
-   a. Optimasi Database dengan memperhatikan indexing dan tipe data - Bobot 5%
+   a. Optimasi Database dengan memperhatikan indexing dan tipe data - Bobot 5% :heavy_check_mark:
 
-   b. Untuk authorization gunakan JWT - Bobot 5%
-   c. Untuk produk bisa melakukan upload gambar produk - Bobot 5%
-   d. Menggunakan Form Validation - Bobot 5%
-   e. Gunakan prinsip-prinsip dalam Object Oriented Programing - Bobot 10%
+   b. Untuk authorization gunakan JWT - Bobot 5% :heavy_check_mark:
+   
+   c. Untuk produk bisa melakukan upload gambar produk - Bobot 5% :heavy_check_mark:
+   
+   d. Menggunakan Form Validation - Bobot 5% :heavy_check_mark:
+   
+   e. Gunakan prinsip-prinsip dalam Object Oriented Programing - Bobot 10% (golang has no OOP)
 
 
 
