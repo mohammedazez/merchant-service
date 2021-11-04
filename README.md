@@ -466,6 +466,19 @@ _Response (200)_
 }
 ```
 
+*Response (401 - Unauthorized)*
+
+```
+{
+  "status" : "401",
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Unauthorize"
+}
+```
+
 _Response (500 - Internal Server Error)_
 ```json
 {
@@ -702,6 +715,368 @@ _Response (200)_
   "status" : 200,
   "data" : "",
   "message" : "success delete outlet by Id",
+}
+```
+
+*Response (401 - Unauthorized)*
+
+```
+{
+  "status" : "401",
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Unauthorize"
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "status" : 500,
+  "data" : {
+      "error" : ""
+  },
+  "message" : "Internal server error"
+}
+```
+---
+
+## RESTful Endpoints Products
+### GET /products/all
+
+> Get All products
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "status": 200,
+  "meta" : {
+    "total_page": 1,
+    "current_page": 1,
+    "page_size": 10,
+    "total": 4
+  }, 
+  "data" : [
+      {
+          "id" : "e5bd18e5-d797-464c-8674-341d1f818c2b",
+          "product_name" : "Roti Bagel",
+          "price" : 250000,
+          "sku" : "RTI-BGL-001",
+          "display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+          "outlet_id" : "1d1d7cbd-4508-4ab8-aa1b-913a0ea0f71a"
+      }, {
+          "id" : "0e57af3d-c33d-431b-abfd-0d653a2bad5f",
+          "product_name" : "Roti Bolilo",
+          "price" : 150000,
+          "sku" : "RTI-BLL-001",
+          "display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+          "outlet_id" : "0a9f05b9-9847-47b0-b50c-8dc41c41cf8d"
+      }
+      , {
+          "id" : "d7ba8992-4c5a-41cb-944f-08d8d3bbffea",
+          "product_name" : "Roti Grissini",
+          "price" : 250000,
+          "sku" : "RTI-GRI-001",
+          "display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+          "outlet_id" : "66d33754-2c22-46ac-bde8-3b102c1ba0ec"
+      }
+      , {
+          "id" : "16d5a573-79bb-4bde-a7a3-e764424eaa23",
+          "product_name" : "Roti Ciabatta",
+          "price" : 450000,
+          "sku" : "RTI-CBT-001",
+          "display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+          "outlet_id" : "21df4b09-85fd-4a86-ac12-3cf2a61bb39b"
+      }
+  ],
+  "message": "success"
+}
+```
+
+*Response (401 - Unauthorized)*
+
+```
+{
+  "status" : "401",
+   "meta" : {
+    "total_page": 0,
+    "current_page": 0,
+    "page_size": 0,
+    "total": 0
+  }, 
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Unauthorize"
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "status": 500,
+  "meta" : {
+    "total_page": 0,
+    "current_page": 0,
+    "page_size": 0,
+    "total": 0
+  }, 
+  "data" : {
+      "error" : ""
+  },
+  "message" : "Internal server error",
+}
+```
+---
+
+### POST /products/create
+
+> Create new products
+
+_Request Header_
+```
+{
+   "Authorization": "<your Authorization>"
+}
+```
+_Request Body_
+
+```json
+{
+  "product_name" : "Roti Grissini",
+  "price" : 250000,
+  "sku" : "RTI-GRI-001",
+  "display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+  "outlet_id" : "66d33754-2c22-46ac-bde8-3b102c1ba0ec"
+}
+```
+
+_Response (201)_
+```json
+{
+  "status" : 201,
+  "data" : 
+      {
+         "id" : <given id by system>,
+	 "product_name" : "<posted product name>",
+	 "price" : "<posted price>",
+	 "sku" : "<posted sku>",
+	 "display_image" : "<posted display image>",
+	 "outlet_id" : "<posted outlet id>",
+      },
+   "message" : "success create new product",
+}
+```
+
+_Response (400 - Bad Request)_
+```json
+{
+  "status" : "400",
+  "data" : 
+      {
+        "errors" : []
+      },
+  "message" : "input data required"
+}
+```
+
+*Response (401 - Unauthorized)*
+
+```
+{
+  "status" : "401",
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Unauthorize"
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "status" : 500,
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Internal Server error"
+}
+```
+---
+
+### GET /products/:product_id
+
+> Get product by Id
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "status" : 200,
+  "data" :
+      {
+         "id" : "e5bd18e5-d797-464c-8674-341d1f818c2b",
+         "product_name" : "Roti Bagel",
+         "price" : 250000,
+         "sku" : "RTI-BGL-001",
+         "display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+         "outlet_id" : "1d1d7cbd-4508-4ab8-aa1b-913a0ea0f71a"
+      },
+   "message" : "success get product by Id"
+}
+```
+_Response (400 - Bad Request)_
+```json
+{
+  "status" : "400"
+  "data" : 
+      {
+        "error" : "product id <id? not found"
+      },
+  "message" : "error bad request product Id"
+}
+```
+
+*Response (401 - Unauthorized)*
+
+```
+{
+  "status" : "401",
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Unauthorize"
+}
+```
+
+_Response (500 - Internal Server Error)_
+
+```json
+{
+  "status" : 500,
+  "data" : {
+      "error" : ""
+  },
+  "message" : "Internal server error"
+}
+```
+---
+
+### PUT /products/:product_id
+
+> Update product by Id
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```json
+{
+    "product_name" : "Roti Bagel good quality",
+    "price" : 300000,
+    "sku" : "RTI-BGL-001",
+    "display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+    "outlet_id" : "1d1d7cbd-4508-4ab8-aa1b-913a0ea0f71a"
+}
+```
+
+_Response (200)_
+```json
+{
+  "status" : 200,
+  "data" :
+      {
+        "id" : "e5bd18e5-d797-464c-8674-341d1f818c2b",
+    	"product_name" : "Roti Bagel good quality",
+    	"price" : 300000,
+    	"sku" : "RTI-BGL-001",
+    	"display_image" : "https://merchants.herokuapp.com/products/foto-product-baru.jpg",
+    	"outlet_id" : "1d1d7cbd-4508-4ab8-aa1b-913a0ea0f71a"
+      },
+  "message" : "success update product by Id"
+}
+```
+
+*Response (401 - Unauthorized)*
+
+```
+{
+  "status" : "401",
+  "data" : 
+      {
+        "error" : ""
+      },
+  "message" : "Unauthorize"
+}
+```
+
+_Response (500 - Internal Server Error)_
+```json
+{
+  "status" : 500,
+  "data" : {
+      "error" : ""
+  },
+  "message" : "Internal server error"
+}
+```
+---
+
+### DELETE /products/:products_id
+
+> Delete product by Id
+
+_Request Header_
+```json
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```json
+{
+  "status" : 200,
+  "data" : "",
+  "message" : "success delete product by Id",
 }
 ```
 
