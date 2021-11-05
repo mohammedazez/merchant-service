@@ -13,6 +13,8 @@ import (
 type Service interface {
 	RegisterUser(userUser entity.UserInput) (UserFormat, error)
 	LoginUser(input entity.LoginUserInput) (UserFormat, error)
+	ShowAllUser() ([]UserFormat, error)
+	FindUserByID(userID string) (UserFormat, error)
 }
 
 type service struct {
@@ -70,4 +72,37 @@ func (s *service) LoginUser(input entity.LoginUserInput) (UserFormat, error) {
 
 	newError := fmt.Sprintf("user id %v not found", userUser.ID)
 	return UserFormat{}, errors.New(newError)
+}
+
+func (s *service) ShowAllUser() ([]UserFormat, error) {
+	userUser, err := s.repository.ShowAllUser()
+	var formatuserUser []UserFormat
+
+	for _, user := range userUser {
+		formatUser := Format(user)
+		formatuserUser = append(formatuserUser, formatUser)
+
+	}
+	if err != nil {
+		return formatuserUser, err
+	}
+
+	return formatuserUser, nil
+}
+
+func (s *service) FindUserByID(userID string) (UserFormat, error) {
+	userUser, err := s.repository.FindUserByID(userID)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	if len(userUser.ID) == 0 {
+		newError := fmt.Sprintf("user id %s not found", userID)
+		return UserFormat{}, errors.New(newError)
+	}
+
+	formatUser := Format(userUser)
+
+	return formatUser, nil
 }

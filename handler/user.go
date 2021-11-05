@@ -82,3 +82,34 @@ func (h *userHandler) LoginUserHandler(c *gin.Context) {
 	response := helper.APIResponse("success login user", 200, "success", gin.H{"token": token, "id": userData.ID})
 	c.JSON(200, response)
 }
+
+// SHOW ALL USER
+func (h *userHandler) ShowAllUserHandler(c *gin.Context) {
+	userUser, err := h.userService.ShowAllUser()
+
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"errors": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success get all user User", 200, "status OK", userUser)
+	c.JSON(200, response)
+}
+
+// FIND User BY ID
+func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("user_id")
+
+	userUser, err := h.userService.FindUserByID(id)
+	if err != nil {
+		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success get user User by ID", 200, "success", userUser)
+	c.JSON(200, response)
+}
