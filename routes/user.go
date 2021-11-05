@@ -1,6 +1,7 @@
 package routes
 
 import (
+	"merchant-service/auth"
 	"merchant-service/config"
 	"merchant-service/handler"
 	"merchant-service/layer/user"
@@ -11,9 +12,10 @@ import (
 
 var (
 	DB             *gorm.DB = config.Connection()
+	authService             = auth.NewService()
 	userService             = user.NewService(userRepository)
 	userRepository          = user.NewRepository(DB)
-	userHandler             = handler.NewUserHandler(userService)
+	userHandler             = handler.NewUserHandler(userService, authService)
 )
 
 func UserRoute(r *gin.Engine) {

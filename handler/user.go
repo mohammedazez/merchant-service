@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"merchant-service/auth"
 	"merchant-service/entity"
 	"merchant-service/helper"
 	"merchant-service/layer/user"
@@ -10,10 +11,11 @@ import (
 
 type userHandler struct {
 	userService user.Service
+	authService auth.Service
 }
 
-func NewUserHandler(userService user.Service) *userHandler {
-	return &userHandler{userService}
+func NewUserHandler(userService user.Service, authService auth.Service) *userHandler {
+	return &userHandler{userService, authService}
 }
 
 // CREATE NEW USER OR REGISTER
