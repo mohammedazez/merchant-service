@@ -2,20 +2,20 @@ package handler
 
 import (
 	"merchant-service/auth"
-	"merchant-service/entity"
-	"merchant-service/helper"
-	"merchant-service/layer/product"
+	"merchant-service/domain/dto"
+	"merchant-service/service"
+	"merchant-service/utils/helper"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type productHandler struct {
-	productService product.Service
+	productService service.ProductService
 	authService    auth.Service
 }
 
-func NewProductHandler(productService product.Service, authService auth.Service) *productHandler {
+func NewProductHandler(productService service.ProductService, authService auth.Service) *productHandler {
 	return &productHandler{productService, authService}
 }
 
@@ -32,7 +32,7 @@ func (h *productHandler) CreateProductHandler(c *gin.Context) {
 		return
 	}
 
-	var inputProduct entity.ProductInput
+	var inputProduct dto.ProductInput
 
 	if err := c.ShouldBindJSON(&inputProduct); err != nil {
 
@@ -99,7 +99,7 @@ func (h *productHandler) UpdateProductByIDHandler(c *gin.Context) {
 		return
 	}
 
-	var updateProductInput entity.UpdateProductInput
+	var updateProductInput dto.UpdateProductInput
 
 	if err := c.ShouldBindJSON(&updateProductInput); err != nil {
 		splitError := helper.SplitErrorInformation(err)

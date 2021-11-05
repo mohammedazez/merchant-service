@@ -2,26 +2,26 @@ package handler
 
 import (
 	"merchant-service/auth"
-	"merchant-service/entity"
-	"merchant-service/helper"
-	"merchant-service/layer/user"
+	"merchant-service/domain/dto"
+	"merchant-service/service"
+	"merchant-service/utils/helper"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
 )
 
 type userHandler struct {
-	userService user.Service
+	userService service.UserService
 	authService auth.Service
 }
 
-func NewUserHandler(userService user.Service, authService auth.Service) *userHandler {
+func NewUserHandler(userService service.UserService, authService auth.Service) *userHandler {
 	return &userHandler{userService, authService}
 }
 
 // CREATE NEW USER OR REGISTER
 func (h *userHandler) RegisterUserHandler(c *gin.Context) {
-	var inputUser entity.UserInput
+	var inputUser dto.UserInput
 
 	if err := c.ShouldBindJSON(&inputUser); err != nil {
 
@@ -54,7 +54,7 @@ func (h *userHandler) RegisterUserHandler(c *gin.Context) {
 
 //LOGIN User
 func (h *userHandler) LoginUserHandler(c *gin.Context) {
-	var inputLoginUser entity.LoginUserInput
+	var inputLoginUser dto.LoginUserInput
 
 	if err := c.ShouldBindJSON(&inputLoginUser); err != nil {
 		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": err.Error()})
@@ -119,7 +119,7 @@ func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
 func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 	id := c.Params.ByName("user_id")
 
-	var updateUserInput entity.UpdateUserInput
+	var updateUserInput dto.UpdateUserInput
 
 	if err := c.ShouldBindJSON(&updateUserInput); err != nil {
 		splitError := helper.SplitErrorInformation(err)

@@ -1,4 +1,4 @@
-package config
+package mysql
 
 import (
 	"fmt"
@@ -8,6 +8,10 @@ import (
 	"github.com/joho/godotenv"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
+)
+
+var (
+	database *gorm.DB
 )
 
 func Connection() *gorm.DB {
@@ -24,15 +28,21 @@ func Connection() *gorm.DB {
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
 
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	autoCreate := os.Getenv("MIGRATE")
 
-	if err != nil {
-		panic(err.Error())
+	if autoCreate == "true" {
+		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+
+		if err != nil {
+			panic(err.Error())
+		}
+
+		db.AutoMigrate(&migration.User{})
+		db.AutoMigrate(&migration.Outlet{})
+		db.AutoMigrate(&migration.Product{})
+
+		database = db
 	}
 
-	db.AutoMigrate(&migration.User{})
-	db.AutoMigrate(&migration.Outlet{})
-	db.AutoMigrate(&migration.Product{})
-
-	return db
+	return database
 }
