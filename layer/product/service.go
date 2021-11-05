@@ -12,6 +12,7 @@ type Service interface {
 	ShowAllProduct() ([]entity.Product, error)
 	FindProductByID(productID string) (entity.Product, error)
 	UpdateProductByID(productID string, input entity.UpdateProductInput) (entity.Product, error)
+	DeleteProductByID(productID string) (interface{}, error)
 }
 
 type service struct {
@@ -107,4 +108,34 @@ func (s *service) UpdateProductByID(productID string, input entity.UpdateProduct
 	}
 
 	return productUpdated, nil
+}
+
+func (s *service) DeleteProductByID(productID string) (interface{}, error) {
+
+	product, err := s.repository.FindProductByID(productID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if product.ID == 0 {
+		newError := fmt.Sprintf("Product id %s not found", productID)
+		return nil, errors.New(newError)
+	}
+
+	status, err := s.repository.DeleteProductByID(productID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if status == "error" {
+		return nil, errors.New("error delete in internal server")
+	}
+
+	msg := fmt.Sprintf("success delete Product ID : %s", productID)
+
+	formatDelete := FormatDelete(msg)
+
+	return formatDelete, nil
 }

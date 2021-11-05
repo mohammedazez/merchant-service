@@ -120,3 +120,30 @@ func (h *productHandler) UpdateProductByIDHandler(c *gin.Context) {
 	response := helper.APIResponse("success update Product by ID", http.StatusOK, "success", product)
 	c.JSON(http.StatusOK, response)
 }
+
+// DELETE Product BY ID
+func (h *productHandler) DeleteProductByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("product_id")
+
+	userData := c.MustGet("currentUser").(gin.H)
+	userID := userData["user_id"].(string)
+
+	if len(userID) == 0 {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "you are not admin, not authorize"})
+
+		c.JSON(401, responseError)
+		return
+	}
+
+	product, err := h.productService.DeleteProductByID(id)
+
+	if err != nil {
+		responseError := helper.APIResponse("error bad request delete Product", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success delete Product by ID", 200, "success", product)
+	c.JSON(200, response)
+}

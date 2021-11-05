@@ -11,6 +11,7 @@ type Repository interface {
 	ShowAllProduct() ([]entity.Product, error)
 	FindProductByID(ID string) (entity.Product, error)
 	UpdateProductByID(ID string, dataUpdate map[string]interface{}) (entity.Product, error)
+	DeleteProductByID(ID string) (string, error)
 }
 
 type repository struct {
@@ -66,4 +67,12 @@ func (r *repository) UpdateProductByID(ID string, dataUpdate map[string]interfac
 	}
 
 	return product, nil
+}
+
+func (r *repository) DeleteProductByID(ID string) (string, error) {
+	if err := r.db.Where("id = ?", ID).Delete(&entity.Product{}).Error; err != nil {
+		return "error", err
+	}
+
+	return "success", nil
 }
