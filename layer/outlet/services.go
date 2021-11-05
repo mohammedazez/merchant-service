@@ -10,6 +10,7 @@ import (
 type Service interface {
 	CreateOutlet(outlet entity.OutletInput, userID string) (entity.Outlet, error)
 	ShowAllOutlet() ([]entity.Outlet, error)
+	FindOutletByID(outletID string) (entity.Outlet, error)
 }
 
 type service struct {
@@ -55,6 +56,21 @@ func (s *service) ShowAllOutlet() ([]entity.Outlet, error) {
 
 	if err != nil {
 		return outlet, err
+	}
+
+	return outlet, nil
+}
+
+func (s *service) FindOutletByID(outletID string) (entity.Outlet, error) {
+	outlet, err := s.repository.FindOutletByID(outletID)
+
+	if err != nil {
+		return outlet, err
+	}
+
+	if outlet.ID == 0 {
+		newError := fmt.Sprintf("Outlet id %s not found", outletID)
+		return outlet, errors.New(newError)
 	}
 
 	return outlet, nil

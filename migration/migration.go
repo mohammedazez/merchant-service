@@ -30,5 +30,5 @@ type Product struct {
 	Picture     string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	OutletID    int
+	OutletID    string
 }

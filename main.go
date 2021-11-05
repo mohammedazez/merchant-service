@@ -15,6 +15,7 @@ func main() {
 
 	routes.UserRoute(r)
 	routes.OutletRoute(r)
+	routes.ProductRoute(r)
 
 	dbPort := os.Getenv("APP_PORT")
 	r.Run(dbPort)
