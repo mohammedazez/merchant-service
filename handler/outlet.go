@@ -76,3 +76,19 @@ func (h *outletHandler) ShowAllOutletHandler(c *gin.Context) {
 	response := helper.APIResponse("success get all Outlet", 200, "status OK", outlet)
 	c.JSON(200, response)
 }
+
+// FIND Outlet BY ID
+func (h *outletHandler) GetOutletByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("outlet_id")
+
+	outlet, err := h.outletService.FindOutletByID(id)
+	if err != nil {
+		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success get outlet by ID", 200, "success", outlet)
+	c.JSON(200, response)
+}

@@ -16,5 +16,6 @@ var (
 func OutletRoute(r *gin.Engine) {
 	r.POST("outlet", handler.Middleware(userService, authService), outletHandler.CreateOutletHandler)
 	r.GET("outlet", handler.Middleware(userService, authService), outletHandler.ShowAllOutletHandler)
+	r.GET("outlet/:outlet_id", handler.Middleware(userService, authService), outletHandler.GetOutletByIDHandler)
 
 }
