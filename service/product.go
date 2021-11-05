@@ -1,31 +1,33 @@
-package product
+package service
 
 import (
 	"errors"
 	"fmt"
-	"merchant-service/entity"
+	"merchant-service/domain/dto"
+	"merchant-service/storage"
+	"merchant-service/utils/formatter"
 	"time"
 )
 
-type Service interface {
-	CreateProduct(product entity.ProductInput) (entity.Product, error)
-	ShowAllProduct() ([]entity.Product, error)
-	FindProductByID(productID string) (entity.Product, error)
-	UpdateProductByID(productID string, input entity.UpdateProductInput) (entity.Product, error)
+type ProductService interface {
+	CreateProduct(product dto.ProductInput) (dto.Product, error)
+	ShowAllProduct() ([]dto.Product, error)
+	FindProductByID(productID string) (dto.Product, error)
+	UpdateProductByID(productID string, input dto.UpdateProductInput) (dto.Product, error)
 	DeleteProductByID(productID string) (interface{}, error)
 }
 
-type service struct {
-	repository Repository
+type productservice struct {
+	dao storage.ProductDao
 }
 
-func NewService(repository Repository) *service {
-	return &service{repository}
+func NewProductService(dao storage.ProductDao) *productservice {
+	return &productservice{dao}
 }
 
-func (s *service) CreateProduct(product entity.ProductInput) (entity.Product, error) {
+func (s *productservice) CreateProduct(product dto.ProductInput) (dto.Product, error) {
 
-	var newProduct = entity.Product{
+	var newProduct = dto.Product{
 		ProductName: product.ProductName,
 		Price:       product.Price,
 		Sku:         product.Sku,
@@ -35,7 +37,7 @@ func (s *service) CreateProduct(product entity.ProductInput) (entity.Product, er
 		UpdatedAt:   time.Now(),
 	}
 
-	createProduct, err := s.repository.CreateProduct(newProduct)
+	createProduct, err := s.dao.CreateProduct(newProduct)
 
 	if err != nil {
 		return createProduct, err
@@ -44,8 +46,8 @@ func (s *service) CreateProduct(product entity.ProductInput) (entity.Product, er
 	return createProduct, nil
 }
 
-func (s *service) ShowAllProduct() ([]entity.Product, error) {
-	product, err := s.repository.ShowAllProduct()
+func (s *productservice) ShowAllProduct() ([]dto.Product, error) {
+	product, err := s.dao.ShowAllProduct()
 
 	if err != nil {
 		return product, err
@@ -54,8 +56,8 @@ func (s *service) ShowAllProduct() ([]entity.Product, error) {
 	return product, nil
 }
 
-func (s *service) FindProductByID(productID string) (entity.Product, error) {
-	product, err := s.repository.FindProductByID(productID)
+func (s *productservice) FindProductByID(productID string) (dto.Product, error) {
+	product, err := s.dao.FindProductByID(productID)
 
 	if err != nil {
 		return product, err
@@ -69,18 +71,18 @@ func (s *service) FindProductByID(productID string) (entity.Product, error) {
 	return product, nil
 }
 
-func (s *service) UpdateProductByID(productID string, input entity.UpdateProductInput) (entity.Product, error) {
+func (s *productservice) UpdateProductByID(productID string, input dto.UpdateProductInput) (dto.Product, error) {
 	var dataUpdate = map[string]interface{}{}
 
-	product, err := s.repository.FindProductByID(productID)
+	product, err := s.dao.FindProductByID(productID)
 
 	if err != nil {
-		return entity.Product{}, err
+		return dto.Product{}, err
 	}
 
 	if product.ID == 0 {
 		newError := fmt.Sprintf("product id %s not found", productID)
-		return entity.Product{}, errors.New(newError)
+		return dto.Product{}, errors.New(newError)
 	}
 
 	if input.ProductName != "" || len(input.ProductName) != 0 {
@@ -101,7 +103,7 @@ func (s *service) UpdateProductByID(productID string, input entity.UpdateProduct
 	}
 	dataUpdate["updated_at"] = time.Now()
 
-	productUpdated, err := s.repository.UpdateProductByID(productID, dataUpdate)
+	productUpdated, err := s.dao.UpdateProductByID(productID, dataUpdate)
 
 	if err != nil {
 		return productUpdated, err
@@ -110,9 +112,9 @@ func (s *service) UpdateProductByID(productID string, input entity.UpdateProduct
 	return productUpdated, nil
 }
 
-func (s *service) DeleteProductByID(productID string) (interface{}, error) {
+func (s *productservice) DeleteProductByID(productID string) (interface{}, error) {
 
-	product, err := s.repository.FindProductByID(productID)
+	product, err := s.dao.FindProductByID(productID)
 
 	if err != nil {
 		return nil, err
@@ -123,7 +125,7 @@ func (s *service) DeleteProductByID(productID string) (interface{}, error) {
 		return nil, errors.New(newError)
 	}
 
-	status, err := s.repository.DeleteProductByID(productID)
+	status, err := s.dao.DeleteProductByID(productID)
 
 	if err != nil {
 		return nil, err
@@ -135,7 +137,7 @@ func (s *service) DeleteProductByID(productID string) (interface{}, error) {
 
 	msg := fmt.Sprintf("success delete Product ID : %s", productID)
 
-	formatDelete := FormatDelete(msg)
+	formatDelete := formatter.FormatDelete(msg)
 
 	return formatDelete, nil
 }

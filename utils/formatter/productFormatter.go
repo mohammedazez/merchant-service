@@ -1,4 +1,4 @@
-package product
+package formatter
 
 import "time"
 
@@ -7,7 +7,7 @@ type ProductDeleteFormat struct {
 	TimeDelete time.Time `json:"time_delete"`
 }
 
-func FormatDelete(msg string) ProductDeleteFormat {
+func FormatDeleteProduct(msg string) ProductDeleteFormat {
 	var deleteFormat = ProductDeleteFormat{
 		Message:    msg,
 		TimeDelete: time.Now(),
