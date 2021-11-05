@@ -1,7 +1,7 @@
-package user
+package formatter
 
 import (
-	"merchant-service/entity"
+	"merchant-service/domain/dto"
 	"time"
 )
 
@@ -9,7 +9,7 @@ type UserFormat struct {
 	ID       string `json:"id"`
 	FullName string `json:"full_name"`
 	Email    string `json:"email"`
-	Outlet   []entity.Outlet
+	Outlet   []dto.Outlet
 }
 
 type UserDeleteFormat struct {
@@ -17,7 +17,7 @@ type UserDeleteFormat struct {
 	TimeDelete time.Time `json:"time_delete"`
 }
 
-func Format(user entity.User) UserFormat {
+func Format(user dto.User) UserFormat {
 	var formatUser = UserFormat{
 		ID:       user.ID,
 		FullName: user.FullName,

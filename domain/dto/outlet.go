@@ -1,6 +1,8 @@
-package entity
+package dto
 
-import "time"
+import (
+	"time"
+)
 
 type Outlet struct {
 	ID         int       `gorm:"PrimaryKey" json:"id"`

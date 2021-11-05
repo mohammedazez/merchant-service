@@ -2,19 +2,19 @@ package handler
 
 import (
 	"merchant-service/auth"
-	"merchant-service/entity"
-	"merchant-service/helper"
-	"merchant-service/layer/outlet"
+	"merchant-service/domain/dto"
+	"merchant-service/service"
+	"merchant-service/utils/helper"
 
 	"github.com/gin-gonic/gin"
 )
 
 type outletHandler struct {
-	outletService outlet.Service
+	outletService service.OutletService
 	authService   auth.Service
 }
 
-func NewOutletHandler(outletService outlet.Service, authService auth.Service) *outletHandler {
+func NewOutletHandler(outletService service.OutletService, authService auth.Service) *outletHandler {
 	return &outletHandler{outletService, authService}
 }
 
@@ -38,7 +38,7 @@ func (h *outletHandler) CreateOutletHandler(c *gin.Context) {
 
 	// userID := strconv.Itoa(userData)
 
-	var inputOutlet entity.OutletInput
+	var inputOutlet dto.OutletInput
 
 	if err := c.ShouldBindJSON(&inputOutlet); err != nil {
 

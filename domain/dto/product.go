@@ -1,6 +1,8 @@
-package entity
+package dto
 
-import "time"
+import (
+	"time"
+)
 
 type Product struct {
 	ID          int       `gorm:"PrimaryKey" json:"id"`
@@ -16,8 +18,8 @@ type Product struct {
 type ProductInput struct {
 	ProductName string `json:"product_name" binding:"required"`
 	Price       int    `json:"price" binding:"required"`
-	Sku         string `json:"sku"`
-	Picture     string `json:"picture"`
+	Sku         string `json:"sku" binding:"required"`
+	Picture     string `json:"picture" binding:"required"`
 	OutletID    string `json:"outlet_id" binding:"required"`
 }
 

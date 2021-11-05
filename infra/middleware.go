@@ -1,15 +1,15 @@
-package handler
+package infra
 
 import (
 	"merchant-service/auth"
-	"merchant-service/helper"
-	"merchant-service/layer/user"
+	"merchant-service/service"
+	"merchant-service/utils/helper"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )
 
-func Middleware(userService user.Service, authService auth.Service) gin.HandlerFunc {
+func Middleware(userService service.UserService, authService auth.Service) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 

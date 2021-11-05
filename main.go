@@ -1,22 +1,9 @@
 package main
 
 import (
-	"merchant-service/handler"
-	"merchant-service/routes"
-	"os"
-
-	"github.com/gin-gonic/gin"
+	"merchant-service/app"
 )
 
 func main() {
-	r := gin.Default()
-
-	r.Use(handler.CORSMiddleware())
-
-	routes.UserRoute(r)
-	routes.OutletRoute(r)
-	routes.ProductRoute(r)
-
-	dbPort := os.Getenv("APP_PORT")
-	r.Run(dbPort)
+	app.StartApplication()
 }

@@ -1,7 +1,7 @@
-package outlet
+package formatter
 
 import (
-	"merchant-service/entity"
+	"merchant-service/domain/dto"
 	"time"
 )
 
@@ -17,7 +17,7 @@ type OutletDeleteFormat struct {
 	TimeDelete time.Time `json:"time_delete"`
 }
 
-func Format(outlet entity.Outlet) OutletFormat {
+func FormatOutlet(outlet dto.Outlet) OutletFormat {
 	var formatOutlet = OutletFormat{
 		ID:         outlet.ID,
 		OutletName: outlet.OutletName,
@@ -28,7 +28,7 @@ func Format(outlet entity.Outlet) OutletFormat {
 	return formatOutlet
 }
 
-func FormatDelete(msg string) OutletDeleteFormat {
+func FormatDeleteOutlet(msg string) OutletDeleteFormat {
 	var deleteFormat = OutletDeleteFormat{
 		Message:    msg,
 		TimeDelete: time.Now(),
