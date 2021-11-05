@@ -15,4 +15,6 @@ var (
 
 func ProductRoute(r *gin.Engine) {
 	r.POST("product", handler.Middleware(userService, authService), productHandler.CreateProductHandler)
+	r.GET("product", handler.Middleware(userService, authService), productHandler.ShowAllProductHandler)
+	r.GET("product/:product_id", handler.Middleware(userService, authService), productHandler.GetProductByIDHandler)
 }

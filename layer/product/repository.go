@@ -8,6 +8,8 @@ import (
 
 type Repository interface {
 	CreateProduct(product entity.Product) (entity.Product, error)
+	ShowAllProduct() ([]entity.Product, error)
+	FindProductByID(ID string) (entity.Product, error)
 }
 
 type repository struct {
@@ -21,6 +23,28 @@ func NewRepository(db *gorm.DB) *repository {
 func (r *repository) CreateProduct(product entity.Product) (entity.Product, error) {
 
 	err := r.db.Create(&product).Error
+	if err != nil {
+		return product, err
+	}
+
+	return product, nil
+}
+
+func (r *repository) ShowAllProduct() ([]entity.Product, error) {
+	var product []entity.Product
+
+	err := r.db.Find(&product).Error
+	if err != nil {
+		return product, err
+	}
+
+	return product, nil
+}
+
+func (r *repository) FindProductByID(ID string) (entity.Product, error) {
+	var product entity.Product
+
+	err := r.db.Where("id = ?", ID).Find(&product).Error
 	if err != nil {
 		return product, err
 	}
