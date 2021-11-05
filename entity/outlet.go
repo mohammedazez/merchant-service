@@ -15,5 +15,5 @@ type Outlet struct {
 type OutletInput struct {
 	OutletName string `json:"outlet_name" binding:"required"`
 	Picture    string `json:"picture" binding:"required"`
-	UserID     int    `json:"user_id" binding:"required"`
+	UserID     string `json:"user_id" binding:"required"`
 }

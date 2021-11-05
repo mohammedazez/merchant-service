@@ -14,6 +14,7 @@ func main() {
 	r.Use(handler.CORSMiddleware())
 
 	routes.UserRoute(r)
+	routes.OutletRoute(r)
 
 	dbPort := os.Getenv("APP_PORT")
 	r.Run(dbPort)
