@@ -9,6 +9,7 @@ import (
 
 type Service interface {
 	CreateOutlet(outlet entity.OutletInput, userID string) (entity.Outlet, error)
+	ShowAllOutlet() ([]entity.Outlet, error)
 }
 
 type service struct {
@@ -47,4 +48,14 @@ func (s *service) CreateOutlet(outlet entity.OutletInput, userID string) (entity
 	}
 
 	return createOutlet, nil
+}
+
+func (s *service) ShowAllOutlet() ([]entity.Outlet, error) {
+	outlet, err := s.repository.ShowAllOutlet()
+
+	if err != nil {
+		return outlet, err
+	}
+
+	return outlet, nil
 }

@@ -61,3 +61,18 @@ func (h *outletHandler) CreateOutletHandler(c *gin.Context) {
 	response := helper.APIResponse("success create new Outlet", 201, "Status OK", newOutlet)
 	c.JSON(201, response)
 }
+
+// SHOW ALL Outlet
+func (h *outletHandler) ShowAllOutletHandler(c *gin.Context) {
+	outlet, err := h.outletService.ShowAllOutlet()
+
+	if err != nil {
+		responseError := helper.APIResponse("internal server error", 500, "error", gin.H{"errors": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success get all Outlet", 200, "status OK", outlet)
+	c.JSON(200, response)
+}
