@@ -19,6 +19,8 @@ type UserService interface {
 	FindUserByID(userID string) (formatter.UserFormat, error)
 	UpdateUserByID(userID string, input dto.UpdateUserInput) (formatter.UserFormat, error)
 	DeleteUserByID(userID string) (interface{}, error)
+	CreateOutletUser(outlet dto.OutletInput, userID string) (dto.Outlet, error)
+	ShowAllOutletUser() ([]dto.Outlet, error)
 }
 
 type userservice struct {
@@ -178,4 +180,44 @@ func (s *userservice) DeleteUserByID(userID string) (interface{}, error) {
 	formatDelete := formatter.FormatDelete(msg)
 
 	return formatDelete, nil
+}
+
+func (s *userservice) CreateOutletUser(outlet dto.OutletInput, userID string) (dto.Outlet, error) {
+
+	checkStatus, err := s.dao.FindOutletUserByID(userID)
+
+	if err != nil {
+		return checkStatus, err
+	}
+
+	if checkStatus.UserID == userID {
+		errorStatus := fmt.Sprintf("Outlet for user id : %s has been created", userID)
+		return checkStatus, errors.New(errorStatus)
+	}
+
+	var newOutlet = dto.Outlet{
+		OutletName: outlet.OutletName,
+		Picture:    outlet.Picture,
+		UserID:     userID,
+		CreatedAt:  time.Now(),
+		UpdatedAt:  time.Now(),
+	}
+
+	createOutlet, err := s.dao.CreateOutletUser(newOutlet)
+
+	if err != nil {
+		return createOutlet, err
+	}
+
+	return createOutlet, nil
+}
+
+func (s *userservice) ShowAllOutletUser() ([]dto.Outlet, error) {
+	outlet, err := s.dao.ShowAllOutletUser()
+
+	if err != nil {
+		return outlet, err
+	}
+
+	return outlet, nil
 }

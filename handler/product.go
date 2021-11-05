@@ -69,22 +69,6 @@ func (h *productHandler) ShowAllProductHandler(c *gin.Context) {
 	c.JSON(200, response)
 }
 
-// FIND Product BY ID
-func (h *productHandler) GetProductByIDHandler(c *gin.Context) {
-	id := c.Params.ByName("product_id")
-
-	product, err := h.productService.FindProductByID(id)
-	if err != nil {
-		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
-
-		c.JSON(400, responseError)
-		return
-	}
-
-	response := helper.APIResponse("success get Product by ID", 200, "success", product)
-	c.JSON(200, response)
-}
-
 // UPDATE Product BY ID
 func (h *productHandler) UpdateProductByIDHandler(c *gin.Context) {
 	id := c.Params.ByName("product_id")
@@ -145,5 +129,21 @@ func (h *productHandler) DeleteProductByIDHandler(c *gin.Context) {
 	}
 
 	response := helper.APIResponse("success delete Product by ID", 200, "success", product)
+	c.JSON(200, response)
+}
+
+// FIND Outlet BY ID
+func (h *productHandler) GetOutletUserByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("outlet_id")
+
+	outlet, err := h.productService.FindOutletUserByID(id)
+	if err != nil {
+		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success get outlet by ID", 200, "success", outlet)
 	c.JSON(200, response)
 }
