@@ -15,6 +15,7 @@ type ProductService interface {
 	FindProductByID(productID string) (dto.Product, error)
 	UpdateProductByID(productID string, input dto.UpdateProductInput) (dto.Product, error)
 	DeleteProductByID(productID string) (interface{}, error)
+	FindOutletUserByID(outletID string) (dto.Outlet, error)
 }
 
 type productservice struct {
@@ -140,4 +141,19 @@ func (s *productservice) DeleteProductByID(productID string) (interface{}, error
 	formatDelete := formatter.FormatDelete(msg)
 
 	return formatDelete, nil
+}
+
+func (s *productservice) FindOutletUserByID(outletID string) (dto.Outlet, error) {
+	outlet, err := s.dao.FindOutletUserByID(outletID)
+
+	if err != nil {
+		return outlet, err
+	}
+
+	if outlet.ID == 0 {
+		newError := fmt.Sprintf("Outlet id %s not found", outletID)
+		return outlet, errors.New(newError)
+	}
+
+	return outlet, nil
 }
