@@ -39,19 +39,13 @@ func Middleware(userService user.Service, authService auth.Service) gin.HandlerF
 		}
 
 		userID := ""
-		adminID := ""
 
 		if claim["user_id"] != nil {
 			userID = claim["user_id"].(string)
 		}
 
-		if claim["admin_id"] != nil {
-			adminID = claim["admin_id"].(string)
-		}
-
 		c.Set("currentUser", gin.H{
-			"user_id":  userID,
-			"admin_id": adminID,
+			"user_id": userID,
 		})
 	}
 }

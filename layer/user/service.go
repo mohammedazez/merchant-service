@@ -15,6 +15,8 @@ type Service interface {
 	LoginUser(input entity.LoginUserInput) (UserFormat, error)
 	ShowAllUser() ([]UserFormat, error)
 	FindUserByID(userID string) (UserFormat, error)
+	UpdateUserByID(userID string, input entity.UpdateUserInput) (UserFormat, error)
+	DeleteUserByID(userID string) (interface{}, error)
 }
 
 type service struct {
@@ -105,4 +107,69 @@ func (s *service) FindUserByID(userID string) (UserFormat, error) {
 	formatUser := Format(userUser)
 
 	return formatUser, nil
+}
+
+func (s *service) UpdateUserByID(userID string, input entity.UpdateUserInput) (UserFormat, error) {
+	var dataUpdate = map[string]interface{}{}
+
+	userUser, err := s.repository.FindUserByID(userID)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	if len(userUser.ID) == 0 {
+		newError := fmt.Sprintf("user id %s not found", userID)
+		return UserFormat{}, errors.New(newError)
+	}
+
+	if input.FullName != "" || len(input.FullName) != 0 {
+		dataUpdate["FullName"] = input.FullName
+	}
+	if input.Email != "" || len(input.Email) != 0 {
+		dataUpdate["Email"] = input.Email
+	}
+	if input.Password != "" || len(input.Password) != 0 {
+		dataUpdate["Password"] = input.Password
+	}
+	dataUpdate["updated_at"] = time.Now()
+
+	userUpdated, err := s.repository.UpdateUserByID(userID, dataUpdate)
+
+	if err != nil {
+		return UserFormat{}, err
+	}
+
+	formatUser := Format(userUpdated)
+
+	return formatUser, nil
+}
+
+func (s *service) DeleteUserByID(userID string) (interface{}, error) {
+	userUser, err := s.repository.FindUserByID(userID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if len(userUser.ID) == 0 {
+		newError := fmt.Sprintf("user id %s not found", userID)
+		return nil, errors.New(newError)
+	}
+
+	status, err := s.repository.DeleteUserByID(userID)
+
+	if err != nil {
+		return nil, err
+	}
+
+	if status == "error" {
+		return nil, errors.New("error delete in internal server")
+	}
+
+	msg := fmt.Sprintf("success delete user ID : %s", userID)
+
+	formatDelete := FormatDelete(msg)
+
+	return formatDelete, nil
 }
