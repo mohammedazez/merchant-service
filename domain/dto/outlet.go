@@ -10,7 +10,7 @@ type Outlet struct {
 	Picture    string    `json:"picture"`
 	CreatedAt  time.Time `json:"created_at"`
 	UpdatedAt  time.Time `json:"updated_at"`
-	Product    Product   `gorm:"ForeignKey:OutletID"`
+	Product    []Product `json:"product"`
 	UserID     string    `json:"user_id"`
 }
 

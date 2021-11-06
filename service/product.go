@@ -166,7 +166,7 @@ func (s *productservice) DeleteProductByID(productID string) (interface{}, error
 }
 
 func (s *productservice) FindOutletUserByID(outletID string) (dto.Outlet, error) {
-	outlet, err := s.dao.FindOutletUserByID(outletID)
+	outlet, err := s.dao.FindOutletProductByID(outletID)
 
 	if err != nil {
 		return outlet, err

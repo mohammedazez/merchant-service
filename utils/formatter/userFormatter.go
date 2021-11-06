@@ -9,7 +9,6 @@ type UserFormat struct {
 	ID       string `json:"id"`
 	FullName string `json:"full_name"`
 	Email    string `json:"email"`
-	Outlet   []dto.Outlet
 }
 
 type UserDeleteFormat struct {
@@ -22,7 +21,6 @@ func FormatUser(user dto.User) UserFormat {
 		ID:       user.ID,
 		FullName: user.FullName,
 		Email:    user.Email,
-		Outlet:   user.Outlet,
 	}
 
 	return formatUser

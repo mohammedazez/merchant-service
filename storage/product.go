@@ -12,7 +12,7 @@ type ProductDao interface {
 	FindProductByID(ID string) (dto.Product, error)
 	UpdateProductByID(ID string, dataUpdate map[string]interface{}) (dto.Product, error)
 	DeleteProductByID(ID string) (string, error)
-	FindOutletUserByID(ID string) (dto.Outlet, error)
+	FindOutletProductByID(ID string) (dto.Outlet, error)
 }
 
 func NewProductDao(db *gorm.DB) *dao {
@@ -74,7 +74,7 @@ func (r *dao) DeleteProductByID(ID string) (string, error) {
 	return "success", nil
 }
 
-func (r *dao) FindOutletByID(ID string) (dto.Outlet, error) {
+func (r *dao) FindOutletProductByID(ID string) (dto.Outlet, error) {
 	var outlet dto.Outlet
 
 	err := r.db.Where("id = ?", ID).Preload("Product").Find(&outlet).Error

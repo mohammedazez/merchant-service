@@ -16,7 +16,7 @@ type UserService interface {
 	RegisterUser(userUser dto.UserInput) (formatter.UserFormat, error)
 	LoginUser(input dto.LoginUserInput) (formatter.UserFormat, error)
 	ShowAllUser() ([]formatter.UserFormat, error)
-	FindUserByID(userID string) (formatter.UserFormat, error)
+	FindUserByID(userID string) (dto.User, error)
 	UpdateUserByID(userID string, input dto.UpdateUserInput) (formatter.UserFormat, error)
 	DeleteUserByID(userID string) (interface{}, error)
 	CreateOutletUser(outlet dto.OutletInput, userID string) (dto.Outlet, error)
@@ -100,21 +100,19 @@ func (s *userservice) ShowAllUser() ([]formatter.UserFormat, error) {
 	return formatuserUser, nil
 }
 
-func (s *userservice) FindUserByID(userID string) (formatter.UserFormat, error) {
+func (s *userservice) FindUserByID(userID string) (dto.User, error) {
 	user, err := s.dao.FindUserByID(userID)
 
 	if err != nil {
-		return formatter.UserFormat{}, err
+		return dto.User{}, err
 	}
 
 	if len(user.ID) == 0 {
 		newError := fmt.Sprintf("user id %s not found", userID)
-		return formatter.UserFormat{}, errors.New(newError)
+		return dto.User{}, errors.New(newError)
 	}
 
-	formatUser := formatter.FormatUser(user)
-
-	return formatUser, nil
+	return user, nil
 }
 
 func (s *userservice) UpdateUserByID(userID string, input dto.UpdateUserInput) (formatter.UserFormat, error) {

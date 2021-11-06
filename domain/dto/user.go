@@ -11,7 +11,7 @@ type User struct {
 	Password  string    `json:"-"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
-	Outlet    []Outlet  `gorm:"ForeignKey:UserID"`
+	Outlet    []Outlet  `json:"outlet"`
 }
 
 type UserInput struct {

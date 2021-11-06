@@ -133,7 +133,7 @@ func (h *productHandler) DeleteProductByIDHandler(c *gin.Context) {
 }
 
 // FIND Outlet BY ID
-func (h *productHandler) GetOutletUserByIDHandler(c *gin.Context) {
+func (h *productHandler) GetProductOutletByIDHandler(c *gin.Context) {
 	id := c.Params.ByName("outlet_id")
 
 	outlet, err := h.productService.FindOutletUserByID(id)

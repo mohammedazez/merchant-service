@@ -32,15 +32,15 @@ func RegisterApi(r *gin.Engine) {
 		api.POST("/users/register", userHandler.RegisterUserHandler)
 		api.POST("/users/login", userHandler.LoginUserHandler)
 		api.GET("/users", Middleware(userService, authService), userHandler.ShowAllUserHandler)
-		api.GET("/users/:user_id", Middleware(userService, authService), userHandler.GetUserByIDHandler)
-		api.PUT("/users/:user_id", Middleware(userService, authService), userHandler.UpdateUserByIDHandler)
+		api.GET("/users/:user_id", Middleware(userService, authService), userHandler.GetUserByIDHandler)    // preload
+		api.PUT("/users/:user_id", Middleware(userService, authService), userHandler.UpdateUserByIDHandler) // preload
 		api.DELETE("/users/:user_id", Middleware(userService, authService), userHandler.DeleteUserByIDHandler)
 		api.POST("/users/outlet", Middleware(userService, authService), userHandler.CreateOutletUserHandler)
 		api.GET("/users/outlet", Middleware(userService, authService), userHandler.ShowAllOutletUserHandler)
 
 		// product
 		api.POST("/product", Middleware(userService, authService), productHandler.CreateProductHandler)
-		api.GET("/product/:outlet_id", Middleware(userService, authService), productHandler.GetOutletUserByIDHandler)
+		api.GET("/product/:outlet_id", Middleware(userService, authService), productHandler.GetProductOutletByIDHandler) // preload
 		api.GET("/product", Middleware(userService, authService), productHandler.ShowAllProductHandler)
 		api.PUT("/product/:product_id", Middleware(userService, authService), productHandler.UpdateProductByIDHandler)
 		api.DELETE("/product/:product_id", Middleware(userService, authService), productHandler.DeleteProductByIDHandler)
