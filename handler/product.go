@@ -113,7 +113,7 @@ func (h *productHandler) DeleteProductByIDHandler(c *gin.Context) {
 	userID := userData["user_id"].(string)
 
 	if len(userID) == 0 {
-		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "you are not admin, not authorize"})
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "you are not current user, not authorize"})
 
 		c.JSON(401, responseError)
 		return
@@ -133,7 +133,7 @@ func (h *productHandler) DeleteProductByIDHandler(c *gin.Context) {
 }
 
 // FIND Outlet BY ID
-func (h *productHandler) GetOutletUserByIDHandler(c *gin.Context) {
+func (h *productHandler) GetProductOutletByIDHandler(c *gin.Context) {
 	id := c.Params.ByName("outlet_id")
 
 	outlet, err := h.productService.FindOutletUserByID(id)

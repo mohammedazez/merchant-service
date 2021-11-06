@@ -124,7 +124,7 @@ func (s *productservice) UpdateProductByID(productID string, input dto.UpdatePro
 	}
 	dataUpdate["updated_at"] = time.Now()
 
-	productUpdated, err := s.dao.UpdateProductByID(productID, dataUpdate)
+	productUpdated, err := s.dao.UpdateProductByID(productID, input)
 
 	if err != nil {
 		return formatter.ProductFormat{}, err
@@ -166,7 +166,7 @@ func (s *productservice) DeleteProductByID(productID string) (interface{}, error
 }
 
 func (s *productservice) FindOutletUserByID(outletID string) (dto.Outlet, error) {
-	outlet, err := s.dao.FindOutletUserByID(outletID)
+	outlet, err := s.dao.FindOutletProductByID(outletID)
 
 	if err != nil {
 		return outlet, err

@@ -2,7 +2,10 @@ package storage
 
 import (
 	"merchant-service/domain/dto"
+	"merchant-service/storage/query"
+	"time"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -11,7 +14,7 @@ type UserDao interface {
 	FindUserByEmail(email string) (dto.User, error)
 	ShowAllUser() ([]dto.User, error)
 	FindUserByID(ID string) (dto.User, error)
-	UpdateUserByID(ID string, dataUpdate map[string]interface{}) (dto.User, error)
+	UpdateUserByID(ID string, input dto.UpdateUserInput) (dto.User, error)
 	DeleteUserByID(ID string) (string, error)
 	CreateOutletUser(Outlet dto.Outlet) (dto.Outlet, error)
 	FindOutletUserByID(ID string) (dto.Outlet, error)
@@ -26,66 +29,100 @@ func NewDao(db *gorm.DB) *dao {
 	return &dao{db}
 }
 
-func (r *dao) RegisterUser(userUser dto.User) (dto.User, error) {
+func (r *dao) RegisterUser(user dto.User) (dto.User, error) {
+	qry := query.RegisterUser
 
-	err := r.db.Create(&userUser).Error
+	err := r.db.Raw(qry,
+		user.ID,
+		user.FullName,
+		user.Email,
+		user.Password,
+		user.CreatedAt,
+		user.UpdatedAt).Scan(&user).Error
 	if err != nil {
-		return userUser, err
+		return user, err
 	}
 
-	return userUser, nil
+	return user, nil
 }
 
 func (r *dao) FindUserByEmail(email string) (dto.User, error) {
-	var userUser dto.User
+	var user dto.User
+	qry := query.LoginUser
 
-	err := r.db.Where("email = ?", email).Find(&userUser).Error
+	err := r.db.Raw(qry, email).Scan(&user).Error
 	if err != nil {
-		return userUser, err
+		return user, err
 	}
 
-	return userUser, nil
+	return user, nil
 }
 
 func (r *dao) ShowAllUser() ([]dto.User, error) {
-	var userUser []dto.User
+	var user []dto.User
+	qry := query.GetAllUsers
 
-	err := r.db.Preload("Outlet").Find(&userUser).Error
+	err := r.db.Raw(qry).Scan(&user).Error
+
 	if err != nil {
-		return userUser, err
+		return user, err
 	}
 
-	return userUser, nil
+	return user, nil
+
 }
 
 func (r *dao) FindUserByID(ID string) (dto.User, error) {
-	var userUser dto.User
+	var user dto.User
+	err := r.db.Where("id = ?", ID).Preload("Outlet").Find(&user).Error
 
-	err := r.db.Where("id = ?", ID).Preload("Outlet").Find(&userUser).Error
+	// qry := query.FindUserById
+
+	// err := r.db.Raw(qry, ID).Scan(&user).Error
+
 	if err != nil {
-		return userUser, err
+		return user, err
 	}
 
-	return userUser, nil
+	return user, nil
 }
 
-func (r *dao) UpdateUserByID(ID string, dataUpdate map[string]interface{}) (dto.User, error) {
+func (r *dao) UpdateUserByID(ID string, input dto.UpdateUserInput) (dto.User, error) {
 
-	var userUser dto.User
-
-	if err := r.db.Model(&userUser).Where("id = ?", ID).Updates(dataUpdate).Error; err != nil {
-		return userUser, err
+	var user dto.User
+	genPassword, err2 := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
+	if err2 != nil {
+		return user, err2
 	}
 
-	if err := r.db.Where("id = ?", ID).Find(&userUser).Error; err != nil {
-		return userUser, err
+	// if err := r.db.Model(&userUser).Where("id = ?", ID).Updates(dataUpdate).Error; err != nil {
+	// 	return userUser, err
+	// }
+
+	// if err := r.db.Where("id = ?", ID).Find(&userUser).Error; err != nil {
+	// 	return userUser, err
+	// }
+
+	input.UpdatedAt = time.Now()
+
+	qry := query.UpdateUserByID
+	err := r.db.Raw(qry, input.FullName, input.Email, genPassword, input.UpdatedAt, ID).Scan(&user).Error
+
+	if err != nil {
+		return user, err
 	}
 
-	return userUser, nil
+	return user, nil
 }
 
 func (r *dao) DeleteUserByID(ID string) (string, error) {
-	if err := r.db.Where("id = ?", ID).Delete(&dto.User{}).Error; err != nil {
+	// err := r.db.Where("id = ?", ID).Delete(&dto.User{}).Error;
+	user := &dto.User{}
+	qry := query.DeleteUserById
+
+	err := r.db.Raw(qry, ID).Scan(&user).Error
+
+	if err != nil {
 		return "error", err
 	}
 
@@ -94,7 +131,16 @@ func (r *dao) DeleteUserByID(ID string) (string, error) {
 
 func (r *dao) CreateOutletUser(outlet dto.Outlet) (dto.Outlet, error) {
 
-	err := r.db.Create(&outlet).Error
+	// err := r.db.Create(&outlet).Error
+	qry := query.CreateOutletbyUser
+
+	err := r.db.Raw(qry,
+		outlet.ID,
+		outlet.OutletName,
+		outlet.Picture,
+		outlet.UserID,
+		outlet.CreatedAt,
+		outlet.UpdatedAt).Scan(&outlet).Error
 	if err != nil {
 		return outlet, err
 	}
@@ -105,7 +151,12 @@ func (r *dao) CreateOutletUser(outlet dto.Outlet) (dto.Outlet, error) {
 func (r *dao) FindOutletUserByID(ID string) (dto.Outlet, error) {
 	var outlet dto.Outlet
 
-	err := r.db.Where("id = ?", ID).Preload("Product").Find(&outlet).Error
+	// err := r.db.Where("id = ?", ID).Preload("Product").Find(&outlet).Error
+
+	qry := query.FindOutletUserByID
+
+	err := r.db.Raw(qry, ID).Scan(&outlet).Error
+
 	if err != nil {
 		return outlet, err
 	}
@@ -116,7 +167,11 @@ func (r *dao) FindOutletUserByID(ID string) (dto.Outlet, error) {
 func (r *dao) ShowAllOutletUser() ([]dto.Outlet, error) {
 	var outlet []dto.Outlet
 
-	err := r.db.Preload("Product").Find(&outlet).Error
+	// err := r.db.Preload("Product").Find(&outlet).Error
+	qry := query.GetAllOutlets
+
+	err := r.db.Raw(qry).Scan(&outlet).Error
+
 	if err != nil {
 		return outlet, err
 	}

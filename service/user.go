@@ -16,7 +16,7 @@ type UserService interface {
 	RegisterUser(userUser dto.UserInput) (formatter.UserFormat, error)
 	LoginUser(input dto.LoginUserInput) (formatter.UserFormat, error)
 	ShowAllUser() ([]formatter.UserFormat, error)
-	FindUserByID(userID string) (formatter.UserFormat, error)
+	FindUserByID(userID string) (dto.User, error)
 	UpdateUserByID(userID string, input dto.UpdateUserInput) (formatter.UserFormat, error)
 	DeleteUserByID(userID string) (interface{}, error)
 	CreateOutletUser(outlet dto.OutletInput, userID string) (dto.Outlet, error)
@@ -33,6 +33,10 @@ func NewUserService(dao storage.UserDao) *userservice {
 
 func (s *userservice) RegisterUser(userUser dto.UserInput) (formatter.UserFormat, error) {
 	genPassword, err := bcrypt.GenerateFromPassword([]byte(userUser.Password), bcrypt.MinCost)
+
+	if err != nil {
+		return formatter.UserFormat{}, err
+	}
 
 	if err != nil {
 		return formatter.UserFormat{}, err
@@ -100,25 +104,23 @@ func (s *userservice) ShowAllUser() ([]formatter.UserFormat, error) {
 	return formatuserUser, nil
 }
 
-func (s *userservice) FindUserByID(userID string) (formatter.UserFormat, error) {
+func (s *userservice) FindUserByID(userID string) (dto.User, error) {
 	user, err := s.dao.FindUserByID(userID)
 
 	if err != nil {
-		return formatter.UserFormat{}, err
+		return dto.User{}, err
 	}
 
 	if len(user.ID) == 0 {
 		newError := fmt.Sprintf("user id %s not found", userID)
-		return formatter.UserFormat{}, errors.New(newError)
+		return dto.User{}, errors.New(newError)
 	}
 
-	formatUser := formatter.FormatUser(user)
-
-	return formatUser, nil
+	return user, nil
 }
 
 func (s *userservice) UpdateUserByID(userID string, input dto.UpdateUserInput) (formatter.UserFormat, error) {
-	var dataUpdate = map[string]interface{}{}
+	var dataUpdate = dto.UpdateUserInput{}
 
 	user, err := s.dao.FindUserByID(userID)
 
@@ -132,15 +134,15 @@ func (s *userservice) UpdateUserByID(userID string, input dto.UpdateUserInput) (
 	}
 
 	if input.FullName != "" || len(input.FullName) != 0 {
-		dataUpdate["FullName"] = input.FullName
+		dataUpdate.FullName = input.FullName
 	}
 	if input.Email != "" || len(input.Email) != 0 {
-		dataUpdate["Email"] = input.Email
+		dataUpdate.Email = input.Email
 	}
 	if input.Password != "" || len(input.Password) != 0 {
-		dataUpdate["Password"] = input.Password
+		dataUpdate.Password = input.Password
 	}
-	dataUpdate["updated_at"] = time.Now()
+	// dataUpdate["updated_at"] = time.Now()
 
 	userUpdated, err := s.dao.UpdateUserByID(userID, dataUpdate)
 

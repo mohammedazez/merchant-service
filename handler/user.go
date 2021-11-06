@@ -66,9 +66,9 @@ func (h *userHandler) LoginUserHandler(c *gin.Context) {
 	userData, err := h.userService.LoginUser(inputLoginUser)
 
 	if err != nil {
-		responseError := helper.APIResponse("input data required", 401, "bad request", gin.H{"errors": err.Error()})
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": err.Error()})
 
-		c.JSON(401, responseError)
+		c.JSON(400, responseError)
 		return
 	}
 
@@ -155,6 +155,16 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 func (h *userHandler) DeleteUserByIDHandler(c *gin.Context) {
 	id := c.Params.ByName("user_id")
 
+	userData := c.MustGet("currentUser").(gin.H)
+	userID := userData["user_id"]
+
+	if id != userID {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user ID not authorize"})
+
+		c.JSON(401, responseError)
+		return
+	}
+
 	userUser, err := h.userService.DeleteUserByID(id)
 
 	if err != nil {
@@ -199,7 +209,7 @@ func (h *userHandler) CreateOutletUserHandler(c *gin.Context) {
 		return
 	}
 
-	// pathOutletSave := "https://cangkoel.herokuapp.com/" + path
+	// pathOutletSave := "https://merchant.herokuapp.com/" + path
 
 	newOutlet, err := h.userService.CreateOutletUser(inputOutlet, userID)
 	if err != nil {
