@@ -7,6 +7,15 @@ Dalam setiap pekerjaan di atas anda diwajibkan untuk melengkapi hal-hal berikut
   ![ERD Merchant Service](https://user-images.githubusercontent.com/37678093/140065206-e2e36184-cd9e-430c-bfcb-77f040f44f45.png)
 
    b. Data Manipulation Language (DML) - Bobot 5%
+   ```
+SELECT
+      	id,
+      	full_name ,
+      	email
+    FROM
+    	users
+    ORDER BY created_at DESC
+```
    c. Activity Diagrams - Bobot 10%
    ![Activity Diagrams drawio](https://user-images.githubusercontent.com/37678093/140091648-590171fb-c8cd-4ea9-a2fd-704ef134539c.png)
 
