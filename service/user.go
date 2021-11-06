@@ -20,7 +20,7 @@ type UserService interface {
 	UpdateUserByID(userID string, input dto.UpdateUserInput) (formatter.UserFormat, error)
 	DeleteUserByID(userID string) (interface{}, error)
 	CreateOutletUser(outlet dto.OutletInput, userID string) (dto.Outlet, error)
-	ShowAllOutletUser() ([]dto.Outlet, error)
+	ShowAllOutletUser() ([]formatter.OutletFormat, error)
 }
 
 type userservice struct {
@@ -54,7 +54,7 @@ func (s *userservice) RegisterUser(userUser dto.UserInput) (formatter.UserFormat
 	}
 
 	createUser, err := s.dao.RegisterUser(newUser)
-	formatUser := formatter.Format(createUser)
+	formatUser := formatter.FormatUser(createUser)
 
 	if err != nil {
 		return formatUser, err
@@ -75,7 +75,7 @@ func (s *userservice) LoginUser(input dto.LoginUserInput) (formatter.UserFormat,
 			return formatter.UserFormat{}, errors.New("password invalid")
 		}
 
-		formatter := formatter.Format(userUser)
+		formatter := formatter.FormatUser(userUser)
 
 		return formatter, nil
 	}
@@ -89,7 +89,7 @@ func (s *userservice) ShowAllUser() ([]formatter.UserFormat, error) {
 	var formatuserUser []formatter.UserFormat
 
 	for _, users := range userUser {
-		formatUser := formatter.Format(users)
+		formatUser := formatter.FormatUser(users)
 		formatuserUser = append(formatuserUser, formatUser)
 
 	}
@@ -101,18 +101,18 @@ func (s *userservice) ShowAllUser() ([]formatter.UserFormat, error) {
 }
 
 func (s *userservice) FindUserByID(userID string) (formatter.UserFormat, error) {
-	userUser, err := s.dao.FindUserByID(userID)
+	user, err := s.dao.FindUserByID(userID)
 
 	if err != nil {
 		return formatter.UserFormat{}, err
 	}
 
-	if len(userUser.ID) == 0 {
+	if len(user.ID) == 0 {
 		newError := fmt.Sprintf("user id %s not found", userID)
 		return formatter.UserFormat{}, errors.New(newError)
 	}
 
-	formatUser := formatter.Format(userUser)
+	formatUser := formatter.FormatUser(user)
 
 	return formatUser, nil
 }
@@ -120,13 +120,13 @@ func (s *userservice) FindUserByID(userID string) (formatter.UserFormat, error) 
 func (s *userservice) UpdateUserByID(userID string, input dto.UpdateUserInput) (formatter.UserFormat, error) {
 	var dataUpdate = map[string]interface{}{}
 
-	userUser, err := s.dao.FindUserByID(userID)
+	user, err := s.dao.FindUserByID(userID)
 
 	if err != nil {
 		return formatter.UserFormat{}, err
 	}
 
-	if len(userUser.ID) == 0 {
+	if len(user.ID) == 0 {
 		newError := fmt.Sprintf("user id %s not found", userID)
 		return formatter.UserFormat{}, errors.New(newError)
 	}
@@ -148,7 +148,7 @@ func (s *userservice) UpdateUserByID(userID string, input dto.UpdateUserInput) (
 		return formatter.UserFormat{}, err
 	}
 
-	formatUser := formatter.Format(userUpdated)
+	formatUser := formatter.FormatUser(userUpdated)
 
 	return formatUser, nil
 }
@@ -177,7 +177,7 @@ func (s *userservice) DeleteUserByID(userID string) (interface{}, error) {
 
 	msg := fmt.Sprintf("success delete user ID : %s", userID)
 
-	formatDelete := formatter.FormatDelete(msg)
+	formatDelete := formatter.FormatDeleteUser(msg)
 
 	return formatDelete, nil
 }
@@ -195,7 +195,14 @@ func (s *userservice) CreateOutletUser(outlet dto.OutletInput, userID string) (d
 		return checkStatus, errors.New(errorStatus)
 	}
 
+	outletuuid, err := uuid.NewV4()
+
+	if err != nil {
+		return dto.Outlet{}, err
+	}
+
 	var newOutlet = dto.Outlet{
+		ID:         outletuuid.String(),
 		OutletName: outlet.OutletName,
 		Picture:    outlet.Picture,
 		UserID:     userID,
@@ -212,12 +219,19 @@ func (s *userservice) CreateOutletUser(outlet dto.OutletInput, userID string) (d
 	return createOutlet, nil
 }
 
-func (s *userservice) ShowAllOutletUser() ([]dto.Outlet, error) {
+func (s *userservice) ShowAllOutletUser() ([]formatter.OutletFormat, error) {
 	outlet, err := s.dao.ShowAllOutletUser()
+	var formatOutlet []formatter.OutletFormat
 
-	if err != nil {
-		return outlet, err
+	for _, outlets := range outlet {
+		formatOutlets := formatter.FormatOutlet(outlets)
+		formatOutlet = append(formatOutlet, formatOutlets)
+
 	}
 
-	return outlet, nil
+	if err != nil {
+		return formatOutlet, err
+	}
+
+	return formatOutlet, nil
 }

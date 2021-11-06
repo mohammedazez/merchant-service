@@ -5,7 +5,7 @@ import (
 )
 
 type Outlet struct {
-	ID         int       `gorm:"PrimaryKey" json:"id"`
+	ID         string    `gorm:"PrimaryKey" json:"id"`
 	OutletName string    `json:"outlet_name"`
 	Picture    string    `json:"picture"`
 	CreatedAt  time.Time `json:"created_at"`

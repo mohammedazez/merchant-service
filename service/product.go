@@ -7,13 +7,15 @@ import (
 	"merchant-service/storage"
 	"merchant-service/utils/formatter"
 	"time"
+
+	"github.com/gofrs/uuid"
 )
 
 type ProductService interface {
-	CreateProduct(product dto.ProductInput) (dto.Product, error)
-	ShowAllProduct() ([]dto.Product, error)
-	FindProductByID(productID string) (dto.Product, error)
-	UpdateProductByID(productID string, input dto.UpdateProductInput) (dto.Product, error)
+	CreateProduct(product dto.ProductInput) (formatter.ProductFormat, error)
+	ShowAllProduct() ([]formatter.ProductFormat, error)
+	FindProductByID(productID string) (formatter.ProductFormat, error)
+	UpdateProductByID(productID string, input dto.UpdateProductInput) (formatter.ProductFormat, error)
 	DeleteProductByID(productID string) (interface{}, error)
 	FindOutletUserByID(outletID string) (dto.Outlet, error)
 }
@@ -26,9 +28,16 @@ func NewProductService(dao storage.ProductDao) *productservice {
 	return &productservice{dao}
 }
 
-func (s *productservice) CreateProduct(product dto.ProductInput) (dto.Product, error) {
+func (s *productservice) CreateProduct(product dto.ProductInput) (formatter.ProductFormat, error) {
+
+	productuuid, err := uuid.NewV4()
+
+	if err != nil {
+		return formatter.ProductFormat{}, err
+	}
 
 	var newProduct = dto.Product{
+		ID:          productuuid.String(),
 		ProductName: product.ProductName,
 		Price:       product.Price,
 		Sku:         product.Sku,
@@ -40,50 +49,61 @@ func (s *productservice) CreateProduct(product dto.ProductInput) (dto.Product, e
 
 	createProduct, err := s.dao.CreateProduct(newProduct)
 
+	formatProduct := formatter.FormatProduct(createProduct)
+
 	if err != nil {
-		return createProduct, err
+		return formatProduct, err
 	}
 
-	return createProduct, nil
+	return formatProduct, nil
 }
 
-func (s *productservice) ShowAllProduct() ([]dto.Product, error) {
+func (s *productservice) ShowAllProduct() ([]formatter.ProductFormat, error) {
 	product, err := s.dao.ShowAllProduct()
 
+	var formatuserProduct []formatter.ProductFormat
+
+	for _, products := range product {
+		formatProduct := formatter.FormatProduct(products)
+		formatuserProduct = append(formatuserProduct, formatProduct)
+
+	}
 	if err != nil {
-		return product, err
+		return formatuserProduct, err
 	}
 
-	return product, nil
+	return formatuserProduct, nil
 }
 
-func (s *productservice) FindProductByID(productID string) (dto.Product, error) {
+func (s *productservice) FindProductByID(productID string) (formatter.ProductFormat, error) {
 	product, err := s.dao.FindProductByID(productID)
 
 	if err != nil {
-		return product, err
+		return formatter.ProductFormat{}, err
 	}
 
-	if product.ID == 0 {
+	if len(product.ID) == 0 {
 		newError := fmt.Sprintf("product id %s not found", productID)
-		return product, errors.New(newError)
+		return formatter.ProductFormat{}, errors.New(newError)
 	}
 
-	return product, nil
+	formatProduct := formatter.FormatProduct(product)
+
+	return formatProduct, nil
 }
 
-func (s *productservice) UpdateProductByID(productID string, input dto.UpdateProductInput) (dto.Product, error) {
+func (s *productservice) UpdateProductByID(productID string, input dto.UpdateProductInput) (formatter.ProductFormat, error) {
 	var dataUpdate = map[string]interface{}{}
 
 	product, err := s.dao.FindProductByID(productID)
 
 	if err != nil {
-		return dto.Product{}, err
+		return formatter.ProductFormat{}, err
 	}
 
-	if product.ID == 0 {
+	if len(product.ID) == 0 {
 		newError := fmt.Sprintf("product id %s not found", productID)
-		return dto.Product{}, errors.New(newError)
+		return formatter.ProductFormat{}, errors.New(newError)
 	}
 
 	if input.ProductName != "" || len(input.ProductName) != 0 {
@@ -107,10 +127,12 @@ func (s *productservice) UpdateProductByID(productID string, input dto.UpdatePro
 	productUpdated, err := s.dao.UpdateProductByID(productID, dataUpdate)
 
 	if err != nil {
-		return productUpdated, err
+		return formatter.ProductFormat{}, err
 	}
 
-	return productUpdated, nil
+	formatProduct := formatter.FormatProduct(productUpdated)
+
+	return formatProduct, nil
 }
 
 func (s *productservice) DeleteProductByID(productID string) (interface{}, error) {
@@ -121,7 +143,7 @@ func (s *productservice) DeleteProductByID(productID string) (interface{}, error
 		return nil, err
 	}
 
-	if product.ID == 0 {
+	if len(product.ID) == 0 {
 		newError := fmt.Sprintf("Product id %s not found", productID)
 		return nil, errors.New(newError)
 	}
@@ -138,7 +160,7 @@ func (s *productservice) DeleteProductByID(productID string) (interface{}, error
 
 	msg := fmt.Sprintf("success delete Product ID : %s", productID)
 
-	formatDelete := formatter.FormatDelete(msg)
+	formatDelete := formatter.FormatDeleteProduct(msg)
 
 	return formatDelete, nil
 }
@@ -150,7 +172,7 @@ func (s *productservice) FindOutletUserByID(outletID string) (dto.Outlet, error)
 		return outlet, err
 	}
 
-	if outlet.ID == 0 {
+	if len(outlet.ID) == 0 {
 		newError := fmt.Sprintf("Outlet id %s not found", outletID)
 		return outlet, errors.New(newError)
 	}
