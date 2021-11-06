@@ -52,7 +52,7 @@ const (
 		full_name= ?, 
 		email= ?, 
 		password= ?,
-		updated_at
+		updated_at = ?
 	WHERE 
 		id = ?
 	`

@@ -49,7 +49,8 @@ const (
 		price = ?,
 		sku = ?,
 		picture = ?,
-		outlet_id = ?
+		outlet_id = ?,
+		updated_at = ?
 	WHERE 
 		id = ?
 	`

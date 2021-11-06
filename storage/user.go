@@ -3,7 +3,9 @@ package storage
 import (
 	"merchant-service/domain/dto"
 	"merchant-service/storage/query"
+	"time"
 
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -88,6 +90,10 @@ func (r *dao) FindUserByID(ID string) (dto.User, error) {
 func (r *dao) UpdateUserByID(ID string, input dto.UpdateUserInput) (dto.User, error) {
 
 	var user dto.User
+	genPassword, err2 := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
+	if err2 != nil {
+		return user, err2
+	}
 
 	// if err := r.db.Model(&userUser).Where("id = ?", ID).Updates(dataUpdate).Error; err != nil {
 	// 	return userUser, err
@@ -97,8 +103,10 @@ func (r *dao) UpdateUserByID(ID string, input dto.UpdateUserInput) (dto.User, er
 	// 	return userUser, err
 	// }
 
+	input.UpdatedAt = time.Now()
+
 	qry := query.UpdateUserByID
-	err := r.db.Raw(qry, input.FullName, input.Email, input.Password, ID).Scan(&user).Error
+	err := r.db.Raw(qry, input.FullName, input.Email, genPassword, input.UpdatedAt, ID).Scan(&user).Error
 
 	if err != nil {
 		return user, err

@@ -24,9 +24,10 @@ type ProductInput struct {
 }
 
 type UpdateProductInput struct {
-	ProductName string `json:"product_name"`
-	Price       int64  `json:"price" `
-	Sku         string `json:"sku"`
-	Picture     string `json:"picture"`
-	OutletID    string `json:"outlet_id"`
+	ProductName string    `json:"product_name"`
+	Price       int64     `json:"price" `
+	Sku         string    `json:"sku"`
+	Picture     string    `json:"picture"`
+	OutletID    string    `json:"outlet_id"`
+	UpdatedAt   time.Time `json:"updated_at"`
 }

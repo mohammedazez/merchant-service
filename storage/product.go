@@ -3,6 +3,7 @@ package storage
 import (
 	"merchant-service/domain/dto"
 	"merchant-service/storage/query"
+	"time"
 
 	"gorm.io/gorm"
 )
@@ -82,6 +83,8 @@ func (r *dao) UpdateProductByID(ID string, input dto.UpdateProductInput) (dto.Pr
 	// 	return product, err
 	// }
 
+	input.UpdatedAt = time.Now()
+
 	qry := query.QueryUpdateProductByID
 	err := r.db.Raw(qry,
 		input.ProductName,
@@ -89,6 +92,7 @@ func (r *dao) UpdateProductByID(ID string, input dto.UpdateProductInput) (dto.Pr
 		input.Sku,
 		input.Picture,
 		input.OutletID,
+		input.UpdatedAt,
 		ID).Scan(&product).Error
 
 	if err != nil {

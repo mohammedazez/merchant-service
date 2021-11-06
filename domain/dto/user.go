@@ -22,9 +22,10 @@ type UserInput struct {
 }
 
 type UpdateUserInput struct {
-	FullName string `json:"full_name"`
-	Email    string `json:"email"`
-	Password string `json:"password"`
+	FullName  string    `json:"full_name"`
+	Email     string    `json:"email"`
+	Password  string    `json:"password"`
+	UpdatedAt time.Time `json:"updated_at"`
 }
 
 type LoginUserInput struct {

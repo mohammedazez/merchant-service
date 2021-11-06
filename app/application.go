@@ -9,7 +9,7 @@ import (
 )
 
 var (
-	router = gin.New()
+	router = gin.Default()
 )
 
 func StartApplication() {
