@@ -17,7 +17,7 @@ type UserDeleteFormat struct {
 	TimeDelete time.Time `json:"time_delete"`
 }
 
-func Format(user dto.User) UserFormat {
+func FormatUser(user dto.User) UserFormat {
 	var formatUser = UserFormat{
 		ID:       user.ID,
 		FullName: user.FullName,
@@ -28,7 +28,7 @@ func Format(user dto.User) UserFormat {
 	return formatUser
 }
 
-func FormatDelete(msg string) UserDeleteFormat {
+func FormatDeleteUser(msg string) UserDeleteFormat {
 	var deleteFormat = UserDeleteFormat{
 		Message:    msg,
 		TimeDelete: time.Now(),

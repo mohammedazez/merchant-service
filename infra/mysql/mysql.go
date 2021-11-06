@@ -10,9 +10,10 @@ import (
 	"gorm.io/gorm"
 )
 
-var (
-	database *gorm.DB
-)
+// var (
+// 	database   *gorm.DB
+// 	autoCreate bool
+// )
 
 func Connection() *gorm.DB {
 	err := godotenv.Load()
@@ -28,21 +29,21 @@ func Connection() *gorm.DB {
 
 	dsn := fmt.Sprintf("%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", dbUser, dbPass, dbHost, dbName)
 
-	autoCreate := os.Getenv("MIGRATE")
+	// autoCreate = os.Getenv("MIGRATE") == "true"
 
-	if autoCreate == "true" {
-		db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
+	// if autoCreate {
+	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 
-		if err != nil {
-			panic(err.Error())
-		}
-
-		db.AutoMigrate(&migration.User{})
-		db.AutoMigrate(&migration.Outlet{})
-		db.AutoMigrate(&migration.Product{})
-
-		database = db
+	if err != nil {
+		panic(err.Error())
 	}
 
-	return database
+	db.AutoMigrate(&migration.User{})
+	db.AutoMigrate(&migration.Outlet{})
+	db.AutoMigrate(&migration.Product{})
+
+	return db
+	// }
+
+	// return database
 }

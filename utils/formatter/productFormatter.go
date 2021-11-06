@@ -1,6 +1,33 @@
 package formatter
 
-import "time"
+import (
+	"merchant-service/domain/dto"
+	"time"
+)
+
+type ProductFormat struct {
+	ID          string    `json:"id"`
+	ProductName string    `json:"product_name"`
+	Price       int       `json:"price"`
+	Sku         string    `json:"sku"`
+	Picture     string    `json:"picture"`
+	CreatedAt   time.Time `json:"created_at"`
+	UpdatedAt   time.Time `json:"updated_at"`
+	OutletID    string    `json:"outlet_id"`
+}
+
+func FormatProduct(product dto.Product) ProductFormat {
+	var formatProduct = ProductFormat{
+		ID:          product.ID,
+		ProductName: product.ProductName,
+		Price:       product.Price,
+		Sku:         product.Sku,
+		Picture:     product.Picture,
+		OutletID:    product.OutletID,
+	}
+
+	return formatProduct
+}
 
 type ProductDeleteFormat struct {
 	Message    string    `json:"message"`

@@ -13,6 +13,9 @@ type UserDao interface {
 	FindUserByID(ID string) (dto.User, error)
 	UpdateUserByID(ID string, dataUpdate map[string]interface{}) (dto.User, error)
 	DeleteUserByID(ID string) (string, error)
+	CreateOutletUser(Outlet dto.Outlet) (dto.Outlet, error)
+	FindOutletUserByID(ID string) (dto.Outlet, error)
+	ShowAllOutletUser() ([]dto.Outlet, error)
 }
 
 type dao struct {
@@ -87,4 +90,36 @@ func (r *dao) DeleteUserByID(ID string) (string, error) {
 	}
 
 	return "success", nil
+}
+
+func (r *dao) CreateOutletUser(outlet dto.Outlet) (dto.Outlet, error) {
+
+	err := r.db.Create(&outlet).Error
+	if err != nil {
+		return outlet, err
+	}
+
+	return outlet, nil
+}
+
+func (r *dao) FindOutletUserByID(ID string) (dto.Outlet, error) {
+	var outlet dto.Outlet
+
+	err := r.db.Where("id = ?", ID).Preload("Product").Find(&outlet).Error
+	if err != nil {
+		return outlet, err
+	}
+
+	return outlet, nil
+}
+
+func (r *dao) ShowAllOutletUser() ([]dto.Outlet, error) {
+	var outlet []dto.Outlet
+
+	err := r.db.Preload("Product").Find(&outlet).Error
+	if err != nil {
+		return outlet, err
+	}
+
+	return outlet, nil
 }

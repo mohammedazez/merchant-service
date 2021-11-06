@@ -20,10 +20,6 @@ var (
 	userRepository = storage.NewDao(DB)
 	userHandler    = handler.NewUserHandler(userService, authService)
 
-	outletRepository = storage.NewDao(DB)
-	outletService    = service.NewOutletService(outletRepository)
-	outletHandler    = handler.NewOutletHandler(outletService, authService)
-
 	productRepository = storage.NewProductDao(DB)
 	productService    = service.NewProductService(productRepository)
 	productHandler    = handler.NewProductHandler(productService, authService)
@@ -39,19 +35,15 @@ func RegisterApi(r *gin.Engine) {
 		api.GET("/users/:user_id", Middleware(userService, authService), userHandler.GetUserByIDHandler)
 		api.PUT("/users/:user_id", Middleware(userService, authService), userHandler.UpdateUserByIDHandler)
 		api.DELETE("/users/:user_id", Middleware(userService, authService), userHandler.DeleteUserByIDHandler)
-
-		// outlet
-		api.POST("/outlet", Middleware(userService, authService), outletHandler.CreateOutletHandler)
-		api.GET("/outlet", Middleware(userService, authService), outletHandler.ShowAllOutletHandler)
-		api.GET("/outlet/:outlet_id", Middleware(userService, authService), outletHandler.GetOutletByIDHandler)
+		api.POST("/users/outlet", Middleware(userService, authService), userHandler.CreateOutletUserHandler)
+		api.GET("/users/outlet", Middleware(userService, authService), userHandler.ShowAllOutletUserHandler)
 
 		// product
 		api.POST("/product", Middleware(userService, authService), productHandler.CreateProductHandler)
+		api.GET("/product/:outlet_id", Middleware(userService, authService), productHandler.GetOutletUserByIDHandler)
 		api.GET("/product", Middleware(userService, authService), productHandler.ShowAllProductHandler)
-		api.GET("/product/:product_id", Middleware(userService, authService), productHandler.GetProductByIDHandler)
 		api.PUT("/product/:product_id", Middleware(userService, authService), productHandler.UpdateProductByIDHandler)
 		api.DELETE("/product/:product_id", Middleware(userService, authService), productHandler.DeleteProductByIDHandler)
-
 	}
 
 }
