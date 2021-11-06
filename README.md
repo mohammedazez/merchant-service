@@ -159,19 +159,15 @@ Hal-hal lain yang perlu saya tambahkan:
 a. Download File Postman (compress this zip file, extract and import to your insomnia software)
 [Insomnia_2021-11-06.zip](https://github.com/mohammedazez/merchant-service/files/7490319/Insomnia_2021-11-06.zip)
 
-b. Link Deploy
-
-c. Api Spec
+b. Api Spec
 
 # POST MINI APP RESTFUL API
 
 ```
-deploy= https://merchant.herokuapp.com/
 localhost= http://localhost:8010
 
 example :
 http://localhost:8010/api/users/all
-https://merchant.herokuapp.com/api/users/all
 ```
 
 # List of Endpoints
