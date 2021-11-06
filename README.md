@@ -154,7 +154,8 @@ WHERE id = ?
 
 Hal-hal lain yang perlu saya tambahkan:
 
-a. File Postman
+a. Download File Postman (compress this zip file, extract and import to your insomnia software)
+[Insomnia_2021-11-06.zip](https://github.com/mohammedazez/merchant-service/files/7490319/Insomnia_2021-11-06.zip)
 
 b. Link Deploy
 
