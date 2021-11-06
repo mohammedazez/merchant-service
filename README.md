@@ -10,7 +10,7 @@ Dalam setiap pekerjaan di atas anda diwajibkan untuk melengkapi hal-hal berikut
 
 ### Table Users
 
-- **Get all users**
+**Get all users**
 
    ```
 SELECT id, full_name , email
