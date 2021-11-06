@@ -17,6 +17,7 @@ SELECT id, full_name , email
 FROM users
 ORDER BY created_at DESC
    ```
+
 - **Register User**
 
    ```
@@ -131,11 +132,11 @@ WHERE id = ?
 2. Coding pekerjaan Poin A, B, dan C menggunakan REST API - Bobot 40%
 
    a. Gunakan database Mysql atau PostgreSQL (using MySQL) :heavy_check_mark:
-   
+
    b. Dikerjakan dengan menggunakan Golang (using Golang) :heavy_check_mark:
-   
+
    c. Untuk PHP menggunakan framework CodeIgniter/Laravel
-   
+
    d. Gunakan best practice Rest API untuk menentukan Response Code (using http respone code) :heavy_check_mark:
 
 3. Poin Plus :
@@ -143,11 +144,11 @@ WHERE id = ?
    a. Optimasi Database dengan memperhatikan indexing dan tipe data - Bobot 5% :heavy_check_mark:
 
    b. Untuk authorization gunakan JWT - Bobot 5% :heavy_check_mark:
-   
+
    c. Untuk produk bisa melakukan upload gambar produk - Bobot 5% :heavy_check_mark:
-   
+
    d. Menggunakan Form Validation - Bobot 5% :heavy_check_mark:
-   
+
    e. Gunakan prinsip-prinsip dalam Object Oriented Programing - Bobot 10% (golang has no OOP)
 
 
@@ -170,6 +171,7 @@ https://merchant.herokuapp.com/
 # List of Available Endpoints
 
 ### Users
+
 - `GET /users/all`
 - `POST /users/register`
 - `POST /users/login`
@@ -178,6 +180,7 @@ https://merchant.herokuapp.com/
 - `DELETE /users/:user_id`
 
 ### Outlets
+
 - `GET /outlets/all`
 - `POST /outlets/create`
 - `GET /outlets/:outlet_id` 
@@ -185,6 +188,7 @@ https://merchant.herokuapp.com/
 - `DELETE /outlets/:outlet_id`
 
 ### Products
+
 - `GET /products/all`
 - `POST /products/create`
 - `GET /products/:product_id` 
@@ -194,11 +198,13 @@ https://merchant.herokuapp.com/
 
 
 ## RESTful Endpoints User
+
 ### GET /users/all
 
 > Get All users
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -206,11 +212,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "status": 200,
@@ -246,6 +254,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status": 500,
@@ -261,6 +270,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error",
 }
 ```
+
 ---
 
 ### POST /users/register
@@ -268,11 +278,13 @@ _Response (500 - Internal Server Error)_
 > Create new user
 
 _Request Header_
+
 ```
 not needed
 ```
 
 _Request Body_
+
 ```json
 {
   "full_name" : "<full name to get insert into>",
@@ -282,6 +294,7 @@ _Request Body_
 ```
 
 _Response (201)_
+
 ```json
 {
   "status" : "201"
@@ -296,6 +309,7 @@ _Response (201)_
 ```
 
 _Response (400 - Bad Request)_
+
 ```json
 {
   "status" : 400,
@@ -308,6 +322,7 @@ _Response (400 - Bad Request)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -318,6 +333,7 @@ _Response (500 - Internal Server Error)_
    "message" : "Internal Server error"
 }
 ```
+
 ---
 
 ### POST /users/login
@@ -325,11 +341,13 @@ _Response (500 - Internal Server Error)_
 > Compare data login on database with data inputed
 
 _Request Header_
+
 ```
 not needed
 ```
 
 _Request Body_
+
 ```json
 {
   "email": "<email to get compare>",
@@ -338,6 +356,7 @@ _Request Body_
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -350,6 +369,7 @@ _Response (200)_
 ```
 
 _Response (400 - Bad Request)_
+
 ```json
 {
   "status" : "400",
@@ -362,6 +382,7 @@ _Response (400 - Bad Request)_
 ```
 
 _Response (401 - Unauthorized)_
+
 ```json
 {
   "status" : "401"
@@ -374,6 +395,7 @@ _Response (401 - Unauthorized)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -384,6 +406,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal Server error"
 }
 ```
+
 ---
 
 ### GET /users/:user_id
@@ -391,6 +414,7 @@ _Response (500 - Internal Server Error)_
 > Get user by  ID
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -398,11 +422,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -429,7 +455,9 @@ _Response (200)_
    "message" : "success get user by Id"
 }
 ```
+
 _Response (400 - Bad Request)_
+
 ```json
 {
   "status" : "400"
@@ -452,6 +480,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error"
 }
 ```
+
 ---
 
 ### PUT /users/:user_id
@@ -459,6 +488,7 @@ _Response (500 - Internal Server Error)_
 > Update user by Id
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -466,6 +496,7 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```json
 {
     "full_name" : "Michael baru",
@@ -474,6 +505,7 @@ _Request Body_
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -488,6 +520,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -497,6 +530,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error"
 }
 ```
+
 ---
 
 ### DELETE /users/:id
@@ -504,6 +538,7 @@ _Response (500 - Internal Server Error)_
 > Delete user by ID
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -511,11 +546,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -525,6 +562,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -534,14 +572,17 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error"
 }
 ```
+
 ---
 
 ## RESTful Endpoints Outlets
+
 ### GET /outlets/all
 
 > Get All outlets
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -549,11 +590,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "status": 200,
@@ -602,6 +645,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status": 500,
@@ -617,6 +661,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error",
 }
 ```
+
 ---
 
 ### POST /outlets/create
@@ -624,11 +669,13 @@ _Response (500 - Internal Server Error)_
 > Create new outlets
 
 _Request Header_
+
 ```
 {
    "Authorization": "<your Authorization>"
 }
 ```
+
 _Request Body_
 
 ```json
@@ -638,6 +685,7 @@ _Request Body_
 ```
 
 _Response (201)_
+
 ```json
 {
   "status" : 201,
@@ -651,6 +699,7 @@ _Response (201)_
 ```
 
 _Response (400 - Bad Request)_
+
 ```json
 {
   "status" : "400",
@@ -663,6 +712,7 @@ _Response (400 - Bad Request)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -673,6 +723,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal Server error"
 }
 ```
+
 ---
 
 ### GET /outlets/:outlet_id
@@ -680,6 +731,7 @@ _Response (500 - Internal Server Error)_
 > Get outlet by Id
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -687,11 +739,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -721,7 +775,9 @@ _Response (200)_
    "message" : "success get outlet by Id"
 }
 ```
+
 _Response (400 - Bad Request)_
+
 ```json
 {
   "status" : "400"
@@ -757,6 +813,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error"
 }
 ```
+
 ---
 
 ### PUT /outlets/:outlet_id
@@ -764,6 +821,7 @@ _Response (500 - Internal Server Error)_
 > Update outlet by Id
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -771,6 +829,7 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```json
 {
     "outlet_name" : "Toko Roti cabang Semarang Terbaik",
@@ -778,6 +837,7 @@ _Request Body_
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -804,6 +864,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -813,6 +874,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error"
 }
 ```
+
 ---
 
 ### DELETE /outlets/:outlets_id
@@ -820,6 +882,7 @@ _Response (500 - Internal Server Error)_
 > Delete outlet by ID
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -827,11 +890,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -854,6 +919,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -863,14 +929,17 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error"
 }
 ```
+
 ---
 
 ## RESTful Endpoints Products
+
 ### GET /products/all
 
 > Get All products
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -878,11 +947,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "status": 200,
@@ -949,6 +1020,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status": 500,
@@ -964,6 +1036,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error",
 }
 ```
+
 ---
 
 ### POST /products/create
@@ -971,11 +1044,13 @@ _Response (500 - Internal Server Error)_
 > Create new products
 
 _Request Header_
+
 ```
 {
    "Authorization": "<your Authorization>"
 }
 ```
+
 _Request Body_
 
 ```json
@@ -989,6 +1064,7 @@ _Request Body_
 ```
 
 _Response (201)_
+
 ```json
 {
   "status" : 201,
@@ -1006,6 +1082,7 @@ _Response (201)_
 ```
 
 _Response (400 - Bad Request)_
+
 ```json
 {
   "status" : "400",
@@ -1031,6 +1108,7 @@ _Response (400 - Bad Request)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -1041,6 +1119,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal Server error"
 }
 ```
+
 ---
 
 ### GET /products/:product_id
@@ -1048,6 +1127,7 @@ _Response (500 - Internal Server Error)_
 > Get product by Id
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -1055,11 +1135,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -1075,7 +1157,9 @@ _Response (200)_
    "message" : "success get product by Id"
 }
 ```
+
 _Response (400 - Bad Request)_
+
 ```json
 {
   "status" : "400"
@@ -1111,6 +1195,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error"
 }
 ```
+
 ---
 
 ### PUT /products/:product_id
@@ -1118,6 +1203,7 @@ _Response (500 - Internal Server Error)_
 > Update product by Id
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -1125,6 +1211,7 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```json
 {
     "product_name" : "Roti Bagel good quality",
@@ -1136,6 +1223,7 @@ _Request Body_
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -1166,6 +1254,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -1175,6 +1264,7 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error"
 }
 ```
+
 ---
 
 ### DELETE /products/:products_id
@@ -1182,6 +1272,7 @@ _Response (500 - Internal Server Error)_
 > Delete product by Id
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -1189,11 +1280,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "status" : 200,
@@ -1216,6 +1309,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "status" : 500,
@@ -1225,5 +1319,6 @@ _Response (500 - Internal Server Error)_
   "message" : "Internal server error"
 }
 ```
+
 ---
 
