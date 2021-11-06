@@ -124,7 +124,7 @@ func (s *productservice) UpdateProductByID(productID string, input dto.UpdatePro
 	}
 	dataUpdate["updated_at"] = time.Now()
 
-	productUpdated, err := s.dao.UpdateProductByID(productID, dataUpdate)
+	productUpdated, err := s.dao.UpdateProductByID(productID, input)
 
 	if err != nil {
 		return formatter.ProductFormat{}, err

@@ -66,9 +66,9 @@ func (h *userHandler) LoginUserHandler(c *gin.Context) {
 	userData, err := h.userService.LoginUser(inputLoginUser)
 
 	if err != nil {
-		responseError := helper.APIResponse("input data required", 401, "bad request", gin.H{"errors": err.Error()})
+		responseError := helper.APIResponse("input data required", 400, "bad request", gin.H{"errors": err.Error()})
 
-		c.JSON(401, responseError)
+		c.JSON(400, responseError)
 		return
 	}
 
@@ -199,7 +199,7 @@ func (h *userHandler) CreateOutletUserHandler(c *gin.Context) {
 		return
 	}
 
-	// pathOutletSave := "https://cangkoel.herokuapp.com/" + path
+	// pathOutletSave := "https://merchant.herokuapp.com/" + path
 
 	newOutlet, err := h.userService.CreateOutletUser(inputOutlet, userID)
 	if err != nil {
