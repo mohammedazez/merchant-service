@@ -2,6 +2,7 @@ package storage
 
 import (
 	"merchant-service/domain/dto"
+	"merchant-service/storage/query"
 
 	"gorm.io/gorm"
 )
@@ -26,47 +27,61 @@ func NewDao(db *gorm.DB) *dao {
 	return &dao{db}
 }
 
-func (r *dao) RegisterUser(userUser dto.User) (dto.User, error) {
+func (r *dao) RegisterUser(user dto.User) (dto.User, error) {
+	qry := query.RegisterUser
 
-	err := r.db.Create(&userUser).Error
+	err := r.db.Raw(qry,
+		user.ID,
+		user.FullName,
+		user.Email,
+		user.Password).Scan(&user).Error
 	if err != nil {
-		return userUser, err
+		return user, err
 	}
 
-	return userUser, nil
+	return user, nil
 }
 
 func (r *dao) FindUserByEmail(email string) (dto.User, error) {
-	var userUser dto.User
+	var user dto.User
+	qry := query.LoginUser
 
-	err := r.db.Where("email = ?", email).Find(&userUser).Error
+	err := r.db.Raw(qry, email).Scan(&user).Error
 	if err != nil {
-		return userUser, err
+		return user, err
 	}
 
-	return userUser, nil
+	return user, nil
 }
 
 func (r *dao) ShowAllUser() ([]dto.User, error) {
-	var userUser []dto.User
+	var user []dto.User
+	qry := query.GetAllUsers
 
-	err := r.db.Preload("Outlet").Find(&userUser).Error
+	err := r.db.Raw(qry).Scan(&user).Error
+
 	if err != nil {
-		return userUser, err
+		return user, err
 	}
 
-	return userUser, nil
+	return user, nil
+
 }
 
 func (r *dao) FindUserByID(ID string) (dto.User, error) {
-	var userUser dto.User
+	var user dto.User
 
-	err := r.db.Where("id = ?", ID).Preload("Outlet").Find(&userUser).Error
+	err := r.db.Where("id = ?", ID).Preload("Outlet").Find(&user).Error
+
+	// qry := query.FindUserById
+
+	// err := r.db.Raw(qry, ID).Scan(&user).Error
+
 	if err != nil {
-		return userUser, err
+		return user, err
 	}
 
-	return userUser, nil
+	return user, nil
 }
 
 func (r *dao) UpdateUserByID(ID string, dataUpdate map[string]interface{}) (dto.User, error) {
