@@ -122,7 +122,8 @@ WHERE id = ?
 
 
    c. Activity Diagrams - Bobot 10%
-   ![Activity Diagrams drawio](https://user-images.githubusercontent.com/37678093/140091648-590171fb-c8cd-4ea9-a2fd-704ef134539c.png)
+![Untitled Diagram-Page-4 drawio](https://user-images.githubusercontent.com/37678093/140614126-5bb39609-a65f-4f33-873d-87dcbecac1bf.png)
+
 
    d. Use Case Diagrams - Bobot 5%
 ![usecase](https://user-images.githubusercontent.com/37678093/140612864-ac546bd4-90ff-4031-806d-a4fd2f975c97.png)
