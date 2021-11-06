@@ -44,7 +44,6 @@ func RegisterApi(r *gin.Engine) {
 		api.GET("/product", Middleware(userService, authService), productHandler.ShowAllProductHandler)
 		api.PUT("/product/:product_id", Middleware(userService, authService), productHandler.UpdateProductByIDHandler)
 		api.DELETE("/product/:product_id", Middleware(userService, authService), productHandler.DeleteProductByIDHandler)
-
 	}
 
 }

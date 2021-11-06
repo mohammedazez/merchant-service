@@ -13,7 +13,7 @@ type User struct {
 }
 
 type Outlet struct {
-	ID         int `gorm:"PrimaryKey"`
+	ID         string `gorm:"PrimaryKey"`
 	OutletName string
 	Picture    string
 	CreatedAt  time.Time
@@ -23,12 +23,12 @@ type Outlet struct {
 }
 
 type Product struct {
-	ID          int `gorm:"PrimaryKey"`
+	ID          string `gorm:"PrimaryKey"`
 	ProductName string
 	Price       int64
 	Sku         string
 	Picture     string
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
-	OutletID    string
+	OutletID    string `gorm:"index"`
 }

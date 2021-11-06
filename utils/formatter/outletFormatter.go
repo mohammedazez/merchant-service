@@ -6,7 +6,7 @@ import (
 )
 
 type OutletFormat struct {
-	ID         int    `json:"id"`
+	ID         string `json:"id"`
 	OutletName string `json:"outlet_name"`
 	Picture    string `json:"picture"`
 	UserID     string `json:"user_id"`
