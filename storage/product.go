@@ -23,7 +23,6 @@ func NewProductDao(db *gorm.DB) *dao {
 
 func (r *dao) CreateProduct(product dto.Product) (dto.Product, error) {
 
-	// err := r.db.Create(&product).Error
 	qry := query.QueryCreateProduct
 
 	err := r.db.Raw(qry,
@@ -45,7 +44,6 @@ func (r *dao) CreateProduct(product dto.Product) (dto.Product, error) {
 func (r *dao) ShowAllProduct() ([]dto.Product, error) {
 	var product []dto.Product
 
-	// err := r.db.Find(&product).Error
 	qry := query.QueryFindAllProduct
 
 	err := r.db.Raw(qry).Scan(&product).Error
@@ -59,7 +57,6 @@ func (r *dao) ShowAllProduct() ([]dto.Product, error) {
 func (r *dao) FindProductByID(ID string) (dto.Product, error) {
 	var product dto.Product
 
-	// err := r.db.Where("id = ?", ID).Find(&product).Error
 	qry := query.QueryFindProductById
 
 	err := r.db.Raw(qry, ID).Scan(&product).Error
@@ -74,14 +71,6 @@ func (r *dao) FindProductByID(ID string) (dto.Product, error) {
 func (r *dao) UpdateProductByID(ID string, input dto.UpdateProductInput) (dto.Product, error) {
 
 	var product dto.Product
-
-	// if err := r.db.Model(&product).Where("id = ?", ID).Updates(dataUpdate).Error; err != nil {
-	// 	return product, err
-	// }
-
-	// if err := r.db.Where("id = ?", ID).Find(&product).Error; err != nil {
-	// 	return product, err
-	// }
 
 	input.UpdatedAt = time.Now()
 
@@ -103,7 +92,6 @@ func (r *dao) UpdateProductByID(ID string, input dto.UpdateProductInput) (dto.Pr
 }
 
 func (r *dao) DeleteProductByID(ID string) (string, error) {
-	// err := r.db.Where("id = ?", ID).Delete(&dto.Product{}).Error;
 	product := &dto.Product{}
 	qry := query.QueryDeleteProductById
 
