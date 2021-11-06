@@ -113,7 +113,7 @@ func (h *productHandler) DeleteProductByIDHandler(c *gin.Context) {
 	userID := userData["user_id"].(string)
 
 	if len(userID) == 0 {
-		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "you are not admin, not authorize"})
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "you are not current user, not authorize"})
 
 		c.JSON(401, responseError)
 		return

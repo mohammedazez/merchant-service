@@ -155,6 +155,16 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 func (h *userHandler) DeleteUserByIDHandler(c *gin.Context) {
 	id := c.Params.ByName("user_id")
 
+	userData := c.MustGet("currentUser").(gin.H)
+	userID := userData["user_id"]
+
+	if id != userID {
+		responseError := helper.APIResponse("Unauthorize", 401, "error", gin.H{"error": "user ID not authorize"})
+
+		c.JSON(401, responseError)
+		return
+	}
+
 	userUser, err := h.userService.DeleteUserByID(id)
 
 	if err != nil {
