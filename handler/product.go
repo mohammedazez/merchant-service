@@ -147,3 +147,19 @@ func (h *productHandler) GetProductOutletByIDHandler(c *gin.Context) {
 	response := helper.APIResponse("success get outlet by ID", 200, "success", outlet)
 	c.JSON(200, response)
 }
+
+// FIND Product BY ID
+func (h *productHandler) GetProductByIDHandler(c *gin.Context) {
+	id := c.Params.ByName("product_id")
+
+	product, err := h.productService.FindProductByID(id)
+	if err != nil {
+		responseError := helper.APIResponse("input params error", 400, "bad request", gin.H{"errors": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success get product by ID", 200, "success", product)
+	c.JSON(200, response)
+}

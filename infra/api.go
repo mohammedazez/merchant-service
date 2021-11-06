@@ -36,12 +36,13 @@ func RegisterApi(r *gin.Engine) {
 		api.PUT("/users/:user_id", Middleware(userService, authService), userHandler.UpdateUserByIDHandler)
 		api.DELETE("/users/:user_id", Middleware(userService, authService), userHandler.DeleteUserByIDHandler)
 		api.POST("/users/outlet", Middleware(userService, authService), userHandler.CreateOutletUserHandler)
-		api.GET("/users/outlet", Middleware(userService, authService), userHandler.ShowAllOutletUserHandler)
+		api.GET("/users/outlet", userHandler.ShowAllOutletUserHandler)
 
 		// product
 		api.POST("/product", Middleware(userService, authService), productHandler.CreateProductHandler)
-		api.GET("/product/:outlet_id", Middleware(userService, authService), productHandler.GetProductOutletByIDHandler) // preload
-		api.GET("/product", Middleware(userService, authService), productHandler.ShowAllProductHandler)
+		api.GET("/product/:outlet_id", productHandler.GetProductOutletByIDHandler)
+		api.GET("/product", productHandler.ShowAllProductHandler)
+		api.GET("/product/detail/:product_id", productHandler.GetProductByIDHandler)
 		api.PUT("/product/:product_id", Middleware(userService, authService), productHandler.UpdateProductByIDHandler)
 		api.DELETE("/product/:product_id", Middleware(userService, authService), productHandler.DeleteProductByIDHandler)
 	}

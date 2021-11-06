@@ -48,7 +48,7 @@ func (h *userHandler) RegisterUserHandler(c *gin.Context) {
 		c.JSON(500, responseError)
 		return
 	}
-	response := helper.APIResponse("success create new user", 201, "Status OK", newUser)
+	response := helper.APIResponse("success create new user", 201, "Status Created", newUser)
 	c.JSON(201, response)
 }
 
@@ -95,7 +95,7 @@ func (h *userHandler) ShowAllUserHandler(c *gin.Context) {
 		return
 	}
 
-	response := helper.APIResponse("success get all user User", 200, "status OK", userUser)
+	response := helper.APIResponse("success get all user", 200, "status OK", userUser)
 	c.JSON(200, response)
 }
 
@@ -111,7 +111,7 @@ func (h *userHandler) GetUserByIDHandler(c *gin.Context) {
 		return
 	}
 
-	response := helper.APIResponse("success get user User by ID", 200, "success", userUser)
+	response := helper.APIResponse("success get user by ID", 200, "success", userUser)
 	c.JSON(200, response)
 }
 
@@ -147,7 +147,7 @@ func (h *userHandler) UpdateUserByIDHandler(c *gin.Context) {
 		return
 	}
 
-	response := helper.APIResponse("success update user User by ID", http.StatusOK, "success", userUser)
+	response := helper.APIResponse("success update user by ID", http.StatusOK, "success", userUser)
 	c.JSON(http.StatusOK, response)
 }
 
