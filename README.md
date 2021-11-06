@@ -146,7 +146,7 @@ WHERE id = ?
 
    b. Untuk authorization gunakan JWT - Bobot 5% :heavy_check_mark:
    
-   c. Untuk produk bisa melakukan upload gambar produk - Bobot 5% :heavy_check_mark:
+   c. Untuk produk bisa melakukan upload gambar produk - Bobot 5% 
    
    d. Menggunakan Form Validation - Bobot 5% :heavy_check_mark:
    
