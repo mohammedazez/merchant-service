@@ -193,13 +193,13 @@ http://localhost:8010/api/users/all
 
 ### Products
 
-- `POST /api/products`
+- `POST /api/product`
 - `POST /api/product/display-image`
-- `GET /api/products/:outlet_id`
-- `GET /api/products` 
-- `GET /api/products/detail/:product_id`
-- `PUT /api/products/:product_id`
-- `DELETE /api/products/:product_id`
+- `GET /api/product/:outlet_id`
+- `GET /api/product` 
+- `GET /api/product/detail/:product_id`
+- `PUT /api/product/:product_id`
+- `DELETE /api/product/:product_id`
 
 
 
