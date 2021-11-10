@@ -44,7 +44,15 @@ func (r *dao) CreateProduct(product dto.Product) (dto.Product, error) {
 }
 
 func (r *dao) CreatedDisplayImage(displayImage dto.ImageProduct) (dto.ImageProduct, error) {
-	if err := r.db.Create(&displayImage).Error; err != nil {
+	// if err := r.db.Create(&displayImage).Error;
+	qry := query.QueryCreateImage
+
+	err := r.db.Raw(qry,
+		displayImage.ID,
+		displayImage.DisplayImage,
+		displayImage.ProductID).Scan(&displayImage).Error
+
+	if err != nil {
 		return displayImage, err
 	}
 

@@ -14,6 +14,14 @@ const (
 	VALUES(?,?,?,?,?,?,?,?)
 	`
 
+	QueryCreateImage = `
+	INSERT INTO image_products(id,
+		display_image,
+		product_id
+	)
+	VALUES(?,?,?)
+	`
+
 	QueryFindAllProduct = `
 	SELECT
       	id,
