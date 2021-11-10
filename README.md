@@ -3,7 +3,7 @@ Dalam setiap pekerjaan di atas anda diwajibkan untuk melengkapi hal-hal berikut
 1. Buatkan Dokumen Teknis dalam bentuk
 
    a. Entity Relationship Diagram (ERD) - Bobot 10%
-![ERD](https://user-images.githubusercontent.com/37678093/140611942-ed5b7de1-94f9-486b-9a79-ae90cbdbf6f6.png)
+   ![ERD](https://user-images.githubusercontent.com/37678093/140611942-ed5b7de1-94f9-486b-9a79-ae90cbdbf6f6.png)
 
 
    b. Data Manipulation Language (DML) - Bobot 5%
@@ -17,6 +17,7 @@ SELECT id, full_name , email
 FROM users
 ORDER BY created_at DESC
    ```
+
 **Register User**
 
    ```
@@ -88,6 +89,13 @@ INSERT INTO products(id, product_name, price, sku, picture, created_at, updated_
 VALUES(?,?,?,?,?,?,?,?)
    ```
 
+**Create Image**
+
+   ```
+INSERT INTO image_products(id, display_image, product_id)
+VALUES(?,?,?)
+   ```
+
 **Find All Product**
 
    ```
@@ -133,11 +141,11 @@ WHERE id = ?
 2. Coding pekerjaan Poin A, B, dan C menggunakan REST API - Bobot 40%
 
    a. Gunakan database Mysql atau PostgreSQL (using MySQL) :heavy_check_mark:
-   
+
    b. Dikerjakan dengan menggunakan Golang (using Golang) :heavy_check_mark:
-   
+
    c. Untuk PHP menggunakan framework CodeIgniter/Laravel
-   
+
    d. Gunakan best practice Rest API untuk menentukan Response Code (using http respone code) :heavy_check_mark:
 
 3. Poin Plus :
@@ -145,11 +153,11 @@ WHERE id = ?
    a. Optimasi Database dengan memperhatikan indexing dan tipe data - Bobot 5% :heavy_check_mark:
 
    b. Untuk authorization gunakan JWT - Bobot 5% :heavy_check_mark:
-   
+
    c. Untuk produk bisa melakukan upload gambar produk - Bobot 5% :heavy_check_mark:
-   
+
    d. Menggunakan Form Validation - Bobot 5% :heavy_check_mark:
-   
+
    e. Gunakan prinsip-prinsip dalam Object Oriented Programing - Bobot 10% (golang has no OOP)
 
 
@@ -173,6 +181,7 @@ http://localhost:8010/api/users/all
 # List of Endpoints
 
 ### Users
+
 - `GET /api/users`
 - `POST /api/users/register`
 - `POST /api/users/login`
@@ -183,7 +192,9 @@ http://localhost:8010/api/users/all
 - `GET /api/users/outlet`
 
 ### Products
+
 - `POST /api/products`
+- `POST /api/product/display-image`
 - `GET /api/products/:outlet_id`
 - `GET /api/products` 
 - `GET /api/products/detail/:product_id`
@@ -193,11 +204,13 @@ http://localhost:8010/api/users/all
 
 
 ## RESTful Endpoints User
+
 ### GET /api/users/all
 
 > Get All users
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -205,11 +218,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "meta" : {
@@ -243,6 +258,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "meta" : {
@@ -255,6 +271,7 @@ _Response (500 - Internal Server Error)_
   },
 }
 ```
+
 ---
 
 ### POST /api/users/register
@@ -262,11 +279,13 @@ _Response (500 - Internal Server Error)_
 > Create new user
 
 _Request Header_
+
 ```
 not needed
 ```
 
 _Request Body_
+
 ```json
 {
   "full_name" : "<full name to get insert into>",
@@ -276,6 +295,7 @@ _Request Body_
 ```
 
 _Response (201)_
+
 ```json
 {
   "meta": {
@@ -292,6 +312,7 @@ _Response (201)_
 ```
 
 _Response (400 - Bad Request)_
+
 ```json
 {
   "meta": {
@@ -308,6 +329,7 @@ _Response (400 - Bad Request)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "meta" : {
@@ -320,6 +342,7 @@ _Response (500 - Internal Server Error)_
   },
 }
 ```
+
 ---
 
 ### POST /api/users/login
@@ -327,11 +350,13 @@ _Response (500 - Internal Server Error)_
 > Compare data login on database with data inputed
 
 _Request Header_
+
 ```
 not needed
 ```
 
 _Request Body_
+
 ```json
 {
   "email": "<email to get compare>",
@@ -340,6 +365,7 @@ _Request Body_
 ```
 
 _Response (200)_
+
 ```json
 {
   "meta": {
@@ -355,6 +381,7 @@ _Response (200)_
 ```
 
 _Response (400 - Bad Request)_
+
 ```json
 {
   "meta": {
@@ -369,6 +396,7 @@ _Response (400 - Bad Request)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "meta" : {
@@ -381,6 +409,7 @@ _Response (500 - Internal Server Error)_
   },
 }
 ```
+
 ---
 
 ### GET /api/users/:user_id
@@ -388,6 +417,7 @@ _Response (500 - Internal Server Error)_
 > Get user by  ID
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -395,11 +425,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "meta": {
@@ -445,7 +477,9 @@ _Response (200)_
   }
 }
 ```
+
 _Response (400 - Bad Request)_
+
 ```json
 {
   "meta": {
@@ -473,6 +507,7 @@ _Response (500 - Internal Server Error)_
   },
 }
 ```
+
 ---
 
 ### PUT /api/users/:user_id
@@ -480,6 +515,7 @@ _Response (500 - Internal Server Error)_
 > Update user by Id
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -487,6 +523,7 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```json
 {
 	"full_name": "azizbaru",
@@ -496,6 +533,7 @@ _Request Body_
 ```
 
 _Response (200)_
+
 ```json
 {
   "meta": {
@@ -512,6 +550,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "meta": {
@@ -524,6 +563,7 @@ _Response (500 - Internal Server Error)_
   }
 }
 ```
+
 *Response (401 - Unauthorized)*
 
 ```
@@ -548,6 +588,7 @@ _Response (500 - Internal Server Error)_
 > Delete user by ID
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -555,11 +596,13 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "meta": {
@@ -575,6 +618,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "meta": {
@@ -587,6 +631,7 @@ _Response (500 - Internal Server Error)_
   }
 }
 ```
+
 _Response (401 - Unauthorize)_
 
 ```json
@@ -802,7 +847,6 @@ not needed
 _Response (200)_
 
 ```json
-
   "meta": {
     "message": "success get outlet by ID",
     "code": 200,
@@ -890,16 +934,19 @@ _Response (500 - Internal Server Error)_
 > Get All products
 
 _Request Header_
+
 ```json
 not needed
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "meta": {
@@ -943,6 +990,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "meta": {
@@ -964,11 +1012,13 @@ _Response (500 - Internal Server Error)_
 > Create new products
 
 _Request Header_
+
 ```
 {
    "Authorization": "<your Authorization>"
 }
 ```
+
 _Request Body_
 
 ```json
@@ -982,6 +1032,7 @@ _Request Body_
 ```
 
 _Response (201)_
+
 ```json
 {
   "meta": {
@@ -1003,6 +1054,7 @@ _Response (201)_
 ```
 
 _Response (400 - Bad Request)_
+
 ```json
 {
   "meta": {
@@ -1034,6 +1086,7 @@ _Response (400 - Bad Request)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "meta": {
@@ -1046,23 +1099,97 @@ _Response (500 - Internal Server Error)_
   }
 }
 ```
+
 ---
+
+### POST /api/product/display-image
+
+> upload image for product
+
+*Request Header*
+
+```
+{
+   "Authorization": "<your Authorization>"
+}
+```
+
+*Request Body*
+
+```
+file upload (google.com.jpg)
+input json
+```
+
+*Response (201)*
+
+```
+{
+    "meta": {
+        "message": "success create product image",
+        "code": 201,
+        "status": "success"
+    },
+    "data": {
+        "id": "e0ebcd95-cc53-44a6-9c8e-fac0e2d9c178",
+        "display_image": "images/picture-suntik.png",
+        "product_id": "5c91df00-efde-402a-923a-d95abe5112d6"
+    }
+}
+```
+
+*Response (400 - Bad Request)*
+
+```
+{
+  "meta" : {
+      "message" : "input data required",
+      "code" : 400,
+      "status" : "bad request"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+
+*Response (500 - Internal Server Error)*
+
+```
+{
+  "meta" : {
+      "message" : "Internal server error",
+      "code" : 500,
+      "status" : "error"
+  }, 
+  "data" : {
+      "error" : ""
+  }
+}
+```
+
+
+
+
 
 ### GET /api/products/:product_id
 
 > Get product by Id
 
 _Request Header_
+
 ```json
 not needed
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "meta": {
@@ -1082,7 +1209,9 @@ _Response (200)_
   }
 }
 ```
+
 _Response (400 - Bad Request)_
+
 ```json
 {
   "meta": {
@@ -1110,6 +1239,7 @@ _Response (500 - Internal Server Error)_
   }
 }
 ```
+
 ---
 
 ### PUT /products/:product_id
@@ -1117,6 +1247,7 @@ _Response (500 - Internal Server Error)_
 > Update product by Id
 
 _Request Header_
+
 ```json
 {
    "Authorization": "<your Authorization>"
@@ -1124,6 +1255,7 @@ _Request Header_
 ```
 
 _Request Body_
+
 ```json
 {
 	"product_name": "Roti Tawar baru",
@@ -1135,6 +1267,7 @@ _Request Body_
 ```
 
 _Response (200)_
+
 ```json
 {
   "meta": {
@@ -1171,6 +1304,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "meta": {
@@ -1183,6 +1317,7 @@ _Response (500 - Internal Server Error)_
   }
 }
 ```
+
 ---
 
 ### DELETE /api/products/:products_id
@@ -1190,16 +1325,19 @@ _Response (500 - Internal Server Error)_
 > Delete product by Id
 
 _Request Header_
+
 ```json
 not needed
 ```
 
 _Request Body_
+
 ```
 not needed
 ```
 
 _Response (200)_
+
 ```json
 {
   "meta": {
@@ -1230,6 +1368,7 @@ _Response (200)_
 ```
 
 _Response (500 - Internal Server Error)_
+
 ```json
 {
   "meta": {
@@ -1242,5 +1381,5 @@ _Response (500 - Internal Server Error)_
   }
 }
 ```
----
 
+---
