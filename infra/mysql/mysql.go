@@ -41,6 +41,7 @@ func Connection() *gorm.DB {
 	db.AutoMigrate(&migration.User{})
 	db.AutoMigrate(&migration.Outlet{})
 	db.AutoMigrate(&migration.Product{})
+	db.AutoMigrate(&migration.ImageProduct{})
 
 	return db
 	// }

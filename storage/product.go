@@ -10,8 +10,10 @@ import (
 
 type ProductDao interface {
 	CreateProduct(product dto.Product) (dto.Product, error)
+	CreatedDisplayImage(displayImage dto.ImageProduct) (dto.ImageProduct, error)
 	ShowAllProduct() ([]dto.Product, error)
 	FindProductByID(ID string) (dto.Product, error)
+	FindProductWithImageByID(ID string) (dto.Product, error)
 	UpdateProductByID(ID string, input dto.UpdateProductInput) (dto.Product, error)
 	DeleteProductByID(ID string) (string, error)
 	FindOutletProductByID(ID string) (dto.Outlet, error)
@@ -41,6 +43,14 @@ func (r *dao) CreateProduct(product dto.Product) (dto.Product, error) {
 	return product, nil
 }
 
+func (r *dao) CreatedDisplayImage(displayImage dto.ImageProduct) (dto.ImageProduct, error) {
+	if err := r.db.Create(&displayImage).Error; err != nil {
+		return displayImage, err
+	}
+
+	return displayImage, nil
+}
+
 func (r *dao) ShowAllProduct() ([]dto.Product, error) {
 	var product []dto.Product
 
@@ -60,6 +70,18 @@ func (r *dao) FindProductByID(ID string) (dto.Product, error) {
 	qry := query.QueryFindProductById
 
 	err := r.db.Raw(qry, ID).Scan(&product).Error
+
+	if err != nil {
+		return product, err
+	}
+
+	return product, nil
+}
+
+func (r *dao) FindProductWithImageByID(ID string) (dto.Product, error) {
+	var product dto.Product
+
+	err := r.db.Where("id = ?", ID).Preload("ImageProduct").Find(&product).Error
 
 	if err != nil {
 		return product, err

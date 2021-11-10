@@ -23,12 +23,19 @@ type Outlet struct {
 }
 
 type Product struct {
-	ID          string `gorm:"PrimaryKey"`
-	ProductName string
-	Price       int64
-	Sku         string
-	Picture     string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
-	OutletID    string `gorm:"index"`
+	ID           string `gorm:"PrimaryKey"`
+	ProductName  string
+	Price        int64
+	Sku          string
+	Picture      string
+	CreatedAt    time.Time
+	UpdatedAt    time.Time
+	OutletID     string       `gorm:"index"`
+	DisplayImage ImageProduct `gorm:"ForeignKey:ProductID"`
+}
+
+type ImageProduct struct {
+	ID           string
+	DisplayImage string
+	ProductID    string `gorm:"index"`
 }

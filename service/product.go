@@ -13,8 +13,9 @@ import (
 
 type ProductService interface {
 	CreateProduct(product dto.ProductInput) (formatter.ProductFormat, error)
+	CreateDisplayImageProduct(pathFile string, inputproductID string) (dto.ImageProduct, error)
 	ShowAllProduct() ([]formatter.ProductFormat, error)
-	FindProductByID(productID string) (formatter.ProductFormat, error)
+	FindProductByID(productID string) (dto.Product, error)
 	UpdateProductByID(productID string, input dto.UpdateProductInput) (formatter.ProductFormat, error)
 	DeleteProductByID(productID string) (interface{}, error)
 	FindOutletUserByID(outletID string) (dto.Outlet, error)
@@ -58,6 +59,29 @@ func (s *productservice) CreateProduct(product dto.ProductInput) (formatter.Prod
 	return formatProduct, nil
 }
 
+func (s *productservice) CreateDisplayImageProduct(pathFile string, inputproductID string) (dto.ImageProduct, error) {
+
+	imageuuid, err := uuid.NewV4()
+
+	if err != nil {
+		return dto.ImageProduct{}, err
+	}
+
+	newDisplayImage := dto.ImageProduct{
+		ID:           imageuuid.String(),
+		DisplayImage: pathFile,
+		ProductID:    inputproductID,
+	}
+
+	displayImage, err := s.dao.CreatedDisplayImage(newDisplayImage)
+
+	if err != nil {
+		return displayImage, err
+	}
+
+	return displayImage, nil
+}
+
 func (s *productservice) ShowAllProduct() ([]formatter.ProductFormat, error) {
 	product, err := s.dao.ShowAllProduct()
 
@@ -75,21 +99,21 @@ func (s *productservice) ShowAllProduct() ([]formatter.ProductFormat, error) {
 	return formatuserProduct, nil
 }
 
-func (s *productservice) FindProductByID(productID string) (formatter.ProductFormat, error) {
-	product, err := s.dao.FindProductByID(productID)
+func (s *productservice) FindProductByID(productID string) (dto.Product, error) {
+	product, err := s.dao.FindProductWithImageByID(productID)
 
 	if err != nil {
-		return formatter.ProductFormat{}, err
+		return dto.Product{}, err
 	}
 
 	if len(product.ID) == 0 {
 		newError := fmt.Sprintf("product id %s not found", productID)
-		return formatter.ProductFormat{}, errors.New(newError)
+		return dto.Product{}, errors.New(newError)
 	}
 
-	formatProduct := formatter.FormatProduct(product)
+	// formatProduct := formatter.FormatProduct(product)
 
-	return formatProduct, nil
+	return product, nil
 }
 
 func (s *productservice) UpdateProductByID(productID string, input dto.UpdateProductInput) (formatter.ProductFormat, error) {

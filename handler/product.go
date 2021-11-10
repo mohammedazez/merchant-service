@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"fmt"
 	"merchant-service/auth"
 	"merchant-service/domain/dto"
 	"merchant-service/service"
@@ -51,6 +52,45 @@ func (h *productHandler) CreateProductHandler(c *gin.Context) {
 		return
 	}
 	response := helper.APIResponse("success create new Product", 201, "Status OK", newProduct)
+	c.JSON(201, response)
+}
+
+// CREATE Display Image product
+func (h *productHandler) CreateDisplayImageProduct(c *gin.Context) {
+
+	file, err := c.FormFile("image")          // postman
+	inputproductID := c.PostForm("productID") // postman
+
+	if err != nil {
+		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	path := fmt.Sprintf("images/picture-%s", file.Filename)
+
+	err = c.SaveUploadedFile(file, path)
+
+	if err != nil {
+		responseError := helper.APIResponse("status bad request", 400, "error", gin.H{"error": err.Error()})
+
+		c.JSON(400, responseError)
+		return
+	}
+
+	// pathImageSave := "https://link.com/" + path
+
+	displayImage, err := h.productService.CreateDisplayImageProduct(path, inputproductID)
+
+	if err != nil {
+		responseError := helper.APIResponse("Internal server error", 500, "error", gin.H{"error": err.Error()})
+
+		c.JSON(500, responseError)
+		return
+	}
+
+	response := helper.APIResponse("success create product image", 201, "success", displayImage)
 	c.JSON(201, response)
 }
 

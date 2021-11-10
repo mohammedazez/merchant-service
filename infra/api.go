@@ -32,7 +32,7 @@ func RegisterApi(r *gin.Engine) {
 		api.POST("/users/register", userHandler.RegisterUserHandler)
 		api.POST("/users/login", userHandler.LoginUserHandler)
 		api.GET("/users", Middleware(userService, authService), userHandler.ShowAllUserHandler)
-		api.GET("/users/:user_id", Middleware(userService, authService), userHandler.GetUserByIDHandler) // preload
+		api.GET("/users/:user_id", Middleware(userService, authService), userHandler.GetUserByIDHandler)
 		api.PUT("/users/:user_id", Middleware(userService, authService), userHandler.UpdateUserByIDHandler)
 		api.DELETE("/users/:user_id", Middleware(userService, authService), userHandler.DeleteUserByIDHandler)
 		api.POST("/users/outlet", Middleware(userService, authService), userHandler.CreateOutletUserHandler)
@@ -40,6 +40,7 @@ func RegisterApi(r *gin.Engine) {
 
 		// product
 		api.POST("/product", Middleware(userService, authService), productHandler.CreateProductHandler)
+		api.POST("/product/display-image", Middleware(userService, authService), productHandler.CreateDisplayImageProduct)
 		api.GET("/product/:outlet_id", productHandler.GetProductOutletByIDHandler)
 		api.GET("/product", productHandler.ShowAllProductHandler)
 		api.GET("/product/detail/:product_id", productHandler.GetProductByIDHandler)
